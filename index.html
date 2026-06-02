@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAMILO - Pasar Mitra Lokal Ciamis</title>
+    <!-- Tailwind CSS (via CDN untuk akses cepat) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Poppins', 'sans-serif'] },
+                    colors: {
+                        pamilo: {
+                            dark: '#4A3525',
+                            orange: '#D35400',
+                            cream: '#FFF3E0',
+                            light: '#FAF8F5'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-pamilo-light font-sans text-gray-800 antialiased overflow-x-hidden">
+
+    <!-- NAVBAR -->
+    <nav class="fixed w-full z-50 bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center gap-3">
+                    <div class="w-10 h-10 bg-pamilo-orange rounded-xl flex items-center justify-center">
+                        <i class="fas fa-shopping-bag text-white text-xl"></i>
+                    </div>
+                    <span class="font-black text-2xl tracking-wide text-pamilo-dark">PAMILO</span>
+                </div>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#beranda" class="text-gray-600 hover:text-pamilo-orange font-semibold transition">Beranda</a>
+                    <a href="#layanan" class="text-gray-600 hover:text-pamilo-orange font-semibold transition">Layanan</a>
+                    <a href="#gabung" class="text-gray-600 hover:text-pamilo-orange font-semibold transition">Gabung Mitra</a>
+                    <a href="#download" class="bg-pamilo-dark text-white px-6 py-2.5 rounded-full font-bold hover:bg-pamilo-orange transition shadow-lg flex items-center gap-2">
+                        <i class="fab fa-android"></i> Download APK
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section id="beranda" class="pt-32 pb-20 md:pt-40 md:pb-28 bg-pamilo-cream">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <!-- Text Content -->
+                <div class="z-10">
+                    <div class="inline-block bg-white text-pamilo-orange font-bold px-4 py-1.5 rounded-full text-sm mb-6 shadow-sm border border-pamilo-orange/20">
+                        📍 Ekosistem Digital Kebanggaan Ciamis
+                    </div>
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-pamilo-dark leading-tight mb-6">
+                        Satu Aplikasi Untuk <br>
+                        <span class="text-pamilo-orange">Semua Kebutuhanmu.</span>
+                    </h1>
+                    <p class="text-lg text-gray-700 mb-8 max-w-lg">
+                        Mulai dari pesan Ojek MIGO, belanja ke pasar tradisional, jajan kuliner lokal, hingga bayar pulsa. Semua ada di genggaman warga Galuh!
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#download" class="bg-pamilo-orange text-white text-center px-8 py-3.5 rounded-full font-bold text-lg hover:bg-[#A04000] transition shadow-lg shadow-pamilo-orange/40 flex items-center justify-center gap-2">
+                            <i class="fas fa-download"></i> Download PAMILO
+                        </a>
+                        <a href="#gabung" class="bg-white text-pamilo-dark text-center px-8 py-3.5 rounded-full font-bold text-lg border-2 border-pamilo-dark hover:bg-pamilo-dark hover:text-white transition flex items-center justify-center gap-2">
+                            <i class="fas fa-handshake"></i> Gabung Mitra
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Mockup Image / Illustration Placeholder -->
+                <div class="relative hidden md:block">
+                    <!-- Lingkaran Hiasan Belakang -->
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-pamilo-orange/20 rounded-full blur-3xl"></div>
+                    <div class="relative bg-white border-8 border-gray-900 rounded-[2.5rem] shadow-2xl w-64 h-[500px] mx-auto overflow-hidden">
+                        <!-- Ini adalah representasi layar HP. Nanti bisa diganti dengan gambar screenshot asli APK -->
+                        <div class="bg-pamilo-dark h-full w-full p-4 flex flex-col">
+                            <div class="w-32 h-6 bg-white/20 rounded-full mb-6"></div>
+                            <div class="w-full h-32 bg-pamilo-cream rounded-xl mb-4 flex items-center justify-center">
+                                <i class="fas fa-motorcycle text-pamilo-orange text-4xl"></i>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3 mb-4">
+                                <div class="h-20 bg-white/10 rounded-xl"></div>
+                                <div class="h-20 bg-white/10 rounded-xl"></div>
+                                <div class="h-20 bg-white/10 rounded-xl"></div>
+                                <div class="h-20 bg-white/10 rounded-xl"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LAYANAN KAMI -->
+    <section id="layanan" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-sm font-bold text-pamilo-orange uppercase tracking-widest mb-2">Layanan Kami</h2>
+            <h3 class="text-3xl md:text-4xl font-black text-pamilo-dark mb-16">Apa yang bisa PAMILO lakukan?</h3>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <!-- Layanan 1 -->
+                <div class="p-6 rounded-2xl bg-pamilo-light border border-gray-100 hover:shadow-xl transition group">
+                    <div class="w-16 h-16 bg-[#E8F5E9] rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition">
+                        <i class="fas fa-motorcycle text-2xl text-[#2E7D32]"></i>
+                    </div>
+                    <h4 class="font-bold text-lg text-pamilo-dark mb-2">MIGO Ride</h4>
+                    <p class="text-sm text-gray-500">Ojek online motor & mobil siap antar jemput aktivitas harianmu.</p>
+                </div>
+                <!-- Layanan 2 -->
+                <div class="p-6 rounded-2xl bg-pamilo-light border border-gray-100 hover:shadow-xl transition group">
+                    <div class="w-16 h-16 bg-[#FFF3E0] rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition">
+                        <i class="fas fa-shopping-basket text-2xl text-pamilo-orange"></i>
+                    </div>
+                    <h4 class="font-bold text-lg text-pamilo-dark mb-2">Pasar PAMILO</h4>
+                    <p class="text-sm text-gray-500">Belanja sayur, daging, dan kebutuhan pokok langsung dari pasar.</p>
+                </div>
+                <!-- Layanan 3 -->
+                <div class="p-6 rounded-2xl bg-pamilo-light border border-gray-100 hover:shadow-xl transition group">
+                    <div class="w-16 h-16 bg-[#FFEBEE] rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition">
+                        <i class="fas fa-hamburger text-2xl text-[#C62828]"></i>
+                    </div>
+                    <h4 class="font-bold text-lg text-pamilo-dark mb-2">PAMILO Food</h4>
+                    <p class="text-sm text-gray-500">Pesan makanan favorit & oleh-oleh khas Ciamis langsung ke rumah.</p>
+                </div>
+                <!-- Layanan 4 -->
+                <div class="p-6 rounded-2xl bg-pamilo-light border border-gray-100 hover:shadow-xl transition group">
+                    <div class="w-16 h-16 bg-[#E8EAF6] rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition">
+                        <i class="fas fa-wallet text-2xl text-[#3F51B5]"></i>
+                    </div>
+                    <h4 class="font-bold text-lg text-pamilo-dark mb-2">PPOB & Pulsa</h4>
+                    <p class="text-sm text-gray-500">Bayar tagihan listrik, air, dan isi pulsa pakai saldo PAMILO-Pay.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION GABUNG MITRA -->
+    <section id="gabung" class="py-20 bg-pamilo-dark text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-black mb-4">Jadilah Bagian Dari Perubahan Ciamis</h2>
+                <p class="text-gray-300 max-w-2xl mx-auto">Tingkatkan omset usaha Anda atau raih penghasilan tambahan dengan bergabung ke dalam ekosistem PAMILO secara gratis.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Card Mitra Toko -->
+                <div class="bg-white text-pamilo-dark rounded-3xl p-8 lg:p-12 shadow-2xl relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-pamilo-orange/10 rounded-bl-full"></div>
+                    <div class="w-16 h-16 bg-pamilo-orange rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-store text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-black mb-3">Daftar Mitra Merchant</h3>
+                    <p class="text-gray-600 mb-8">Punya warung, restoran, atau jual produk UMKM? Jangkau ribuan pelanggan baru di Ciamis. Atur etalase digital Anda sekarang.</p>
+                    <a href="LINK_FORM_MERCHANT" target="_blank" class="inline-block bg-pamilo-dark text-white px-8 py-3 rounded-full font-bold hover:bg-gray-800 transition">
+                        Daftar Buka Toko <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+
+                <!-- Card Driver MIGO -->
+                <div class="bg-pamilo-orange text-white rounded-3xl p-8 lg:p-12 shadow-2xl relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-bl-full"></div>
+                    <div class="w-16 h-16 bg-white rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-motorcycle text-pamilo-orange text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-black mb-3">Daftar Driver MIGO</h3>
+                    <p class="text-white/90 mb-8">Punya motor/mobil dan waktu luang? Jadilah pahlawan pengiriman lokal. Atur jam kerjamu sendiri dan tarik penghasilanmu kapan saja.</p>
+                    <a href="LINK_FORM_DRIVER" target="_blank" class="inline-block bg-white text-pamilo-orange px-8 py-3 rounded-full font-bold hover:bg-gray-100 transition">
+                        Daftar Jadi Driver <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-[#2D1F16] text-gray-400 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 border-b border-gray-700 pb-8 mb-8">
+            <div>
+                <h4 class="text-white text-xl font-black mb-4">PAMILO</h4>
+                <p class="text-sm mb-4">Pasar Mitra Lokal.<br>Aplikasi super karya pemuda Ciamis untuk memajukan ekonomi daerah.</p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-instagram text-xl"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-facebook text-xl"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-tiktok text-xl"></i></a>
+                </div>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4">Perusahaan</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="hover:text-white transition">Tentang Kami</a></li>
+                    <li><a href="#" class="hover:text-white transition">Syarat & Ketentuan</a></li>
+                    <li><a href="#" class="hover:text-white transition">Kebijakan Privasi</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4">Hubungi Kami</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><i class="fas fa-envelope mr-2"></i> support@pamilo.com</li>
+                    <li><i class="fas fa-map-marker-alt mr-2"></i> Ciharalang, Ciamis, Jawa Barat</li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm">
+            <p>&copy; 2026 PAMILO - Dikelola oleh Septian Gilang Permana. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
