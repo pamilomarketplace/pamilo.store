@@ -12,8 +12,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- Supabase JS Client -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <script>
         tailwind.config = {
@@ -48,13 +46,13 @@
                 <!-- Judul -->
                 <div class="md:col-span-2">
                     <label class="block text-sm font-bold text-gray-700 mb-2">Judul Artikel / Promo</label>
-                    <input type="text" id="b_judul" oninput="buatSlug()" required class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pamilo-softblue focus:border-pamilo-softblue outline-none" placeholder="Contoh: Diskon Ongkir MIGO Akhir Bulan">
+                    <input type="text" id="b_judul" oninput="buatSlug()" required class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pamilo-softblue outline-none" placeholder="Contoh: Diskon Ongkir MIGO Akhir Bulan">
                 </div>
 
                 <!-- Kategori -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-2">Kategori</label>
-                    <select id="b_kategori" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pamilo-softblue focus:border-pamilo-softblue outline-none">
+                    <select id="b_kategori" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pamilo-softblue outline-none">
                         <option value="Promo">Promo Diskon</option>
                         <option value="Info Mitra">Info Mitra & Driver</option>
                         <option value="Kisah Sukses">Kisah Sukses</option>
@@ -62,11 +60,11 @@
                     </select>
                 </div>
 
-                <!-- URL Gambar -->
+                <!-- UPLOAD GAMBAR (Baru) -->
                 <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-2">URL Gambar Thumbnail</label>
-                    <input type="url" id="b_gambar" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pamilo-softblue focus:border-pamilo-softblue outline-none" placeholder="https://link-gambar-anda.com/foto.jpg">
-                    <p class="text-xs text-gray-400 mt-1">*Kosongkan jika ingin pakai gambar default</p>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Upload Gambar Thumbnail</label>
+                    <input type="file" id="b_gambar_file" accept="image/*" class="w-full border border-gray-300 bg-white rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-pamilo-softblue outline-none file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-pamilo-softblue file:text-white hover:file:bg-[#7a9bc0] transition">
+                    <p class="text-xs text-gray-400 mt-2">*Format JPG/PNG. Kosongkan jika ingin pakai gambar default.</p>
                 </div>
 
                 <!-- Slug (Otomatis) -->
@@ -78,13 +76,13 @@
                 <!-- Konten Berita -->
                 <div class="md:col-span-2">
                     <label class="block text-sm font-bold text-gray-700 mb-2">Isi Konten Berita</label>
-                    <textarea id="b_konten" required rows="8" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pamilo-softblue focus:border-pamilo-softblue outline-none" placeholder="Tulis rincian informasi atau promo di sini..."></textarea>
+                    <textarea id="b_konten" required rows="8" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pamilo-softblue outline-none" placeholder="Tulis rincian informasi atau promo di sini..."></textarea>
                 </div>
                 
                 <!-- Status Publikasi -->
                 <div class="md:col-span-2">
                     <label class="block text-sm font-bold text-gray-700 mb-2">Status Publikasi</label>
-                    <select id="b_status" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pamilo-softblue focus:border-pamilo-softblue outline-none">
+                    <select id="b_status" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pamilo-softblue outline-none">
                         <option value="published">Langsung Terbitkan (Published)</option>
                         <option value="draft">Simpan Sebagai Draft (Belum Tampil)</option>
                     </select>
@@ -100,71 +98,89 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- 🚀 LOGIKA SUPABASE (VERSI ES MODULE MODERN) -->
+    <!-- 🚀 LOGIKA SUPABASE & UPLOAD FILE -->
     <!-- ========================================== -->
     <script type="module">
-        // 1. Mengimpor Supabase dengan jalur paling aman dan pasti terbaca
         import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-        // 2. Kunci Akses Supabase
+        // Kunci Akses Supabase
         const SUPABASE_URL = 'https://fzqdeztlpslhxwdicvnq.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6cWRlenRscHNsaHh3ZGljdm5xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5MzI3NTYsImV4cCI6MjA5NDUwODc1Nn0.3ZCCDPfawASAEU0gCZv8c3LnWNjvV9W-wulkny04CX4';
         
-        // 3. Inisialisasi Database PAMILO
         const pamiloDb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // 4. Fungsi Slug - Ditempelkan ke sistem utama (window) agar bisa dibaca HTML
         window.buatSlug = function() {
             const judul = document.getElementById('b_judul').value;
             const slug = judul.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
             document.getElementById('b_slug').value = slug;
         };
 
-        // 5. Eksekusi Utama - Ditempelkan ke sistem utama
         window.terbitkanBerita = async function(event) {
-            // Perintah mengunci halaman agar TIDAK refresh!
             event.preventDefault(); 
             
             try {
                 const btn = document.getElementById('btnSubmit');
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
                 btn.disabled = true;
 
+                let finalImageUrl = null;
+                const fileGambar = document.getElementById('b_gambar_file').files[0];
+
+                // 1. PROSES UPLOAD GAMBAR JIKA ADA
+                if (fileGambar) {
+                    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengunggah Gambar...';
+                    
+                    // Buat nama file unik agar tidak bentrok
+                    const fileExt = fileGambar.name.split('.').pop();
+                    const fileName = `${Math.floor(Math.random() * 10000)}_${Date.now()}.${fileExt}`;
+                    
+                    const { data: uploadData, error: uploadError } = await pamiloDb.storage
+                        .from('gambar_berita')
+                        .upload(fileName, fileGambar);
+
+                    if (uploadError) throw uploadError;
+
+                    // Dapatkan URL Publik gambar yang baru diupload
+                    const { data: urlData } = pamiloDb.storage.from('gambar_berita').getPublicUrl(fileName);
+                    finalImageUrl = urlData.publicUrl;
+                }
+
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan Artikel...';
+
+                // 2. PROSES SIMPAN TEKS BERITA
                 const dataBerita = {
                     judul: document.getElementById('b_judul').value,
                     slug: document.getElementById('b_slug').value,
                     kategori: document.getElementById('b_kategori').value,
-                    gambar_thumbnail: document.getElementById('b_gambar').value || null,
+                    gambar_thumbnail: finalImageUrl, // Masukkan link gambar dari Supabase
                     konten: document.getElementById('b_konten').value,
                     status: document.getElementById('b_status').value
                 };
 
-                // Menembakkan peluru data ke Supabase
-                const { error } = await pamiloDb.from('berita_website').insert([dataBerita]);
+                const { error: dbError } = await pamiloDb.from('berita_website').insert([dataBerita]);
 
-                // Mengembalikan warna & tulisan tombol
+                if (dbError) throw dbError;
+
+                // 3. SUKSES
                 btn.innerHTML = '<i class="fas fa-paper-plane"></i> Publikasikan Artikel';
                 btn.disabled = false;
+                document.getElementById('formBerita').reset();
+                
+                Swal.fire({
+                    title: 'Berhasil Mengudara! 🚀',
+                    text: 'Gambar dan Artikel Anda telah diterbitkan.',
+                    icon: 'success',
+                    confirmButtonColor: '#8CAED1'
+                });
 
-                if (error) {
-                    // Deteksi jika gembok RLS Supabase belum dibuka
-                    if(error.code === '42501') {
-                        Swal.fire('Gembok Keamanan Aktif', 'Supabase menolak data. Anda harus membuka izin (Policy) Insert untuk tabel berita_website di dashboard Supabase.', 'error');
-                    } else {
-                        Swal.fire('Gagal Menyimpan', error.message, 'error');
-                    }
-                } else {
-                    document.getElementById('formBerita').reset();
-                    Swal.fire({
-                        title: 'Berhasil Mengudara! 🚀',
-                        text: 'Artikel Anda telah diterbitkan dan tampil di pamilo.store',
-                        icon: 'success',
-                        confirmButtonColor: '#8CAED1'
-                    });
-                }
             } catch (err) {
                 console.error("Masalah Eksekusi:", err);
-                Swal.fire('Sistem Error', err.message, 'error');
+                
+                if(err.code === '42501' || err.message.includes('row-level security')) {
+                    Swal.fire('Akses Ditolak', 'Pastikan gembok Policy untuk folder gambar_berita dan tabel berita_website sudah dibuka.', 'error');
+                } else {
+                    Swal.fire('Sistem Error', err.message, 'error');
+                }
                 
                 const btn = document.getElementById('btnSubmit');
                 btn.innerHTML = '<i class="fas fa-paper-plane"></i> Publikasikan Artikel';
