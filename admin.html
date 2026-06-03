@@ -1,4 +1,105 @@
-<!-- ========================================== -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin PAMILO - Tulis Berita</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Poppins', 'sans-serif'] },
+                    colors: {
+                        pamilo: { dark: '#4A3525', cream: '#FFF3E0', light: '#FAF8F5', softblue: '#8CAED1' }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-pamilo-light font-sans text-gray-800 antialiased p-6 md:p-12">
+
+    <div class="max-w-4xl mx-auto bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
+        <!-- Header Admin -->
+        <div class="bg-pamilo-dark p-8 text-white flex justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-black mb-1">Dapur Redaksi PAMILO</h1>
+                <p class="text-sm text-gray-300">Publikasi Informasi & Promo ke pamilo.store</p>
+            </div>
+            <a href="index.html" target="_blank" class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-xl transition text-sm font-bold flex items-center gap-2">
+                <i class="fas fa-external-link-alt"></i> Lihat Website
+            </a>
+        </div>
+
+        <!-- Form Input Berita -->
+        <form id="formBerita" onsubmit="terbitkanBerita(event)" class="p-8 space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Judul -->
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Judul Artikel / Promo</label>
+                    <input type="text" id="b_judul" oninput="buatSlug()" required class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pamilo-softblue focus:border-pamilo-softblue outline-none" placeholder="Contoh: Diskon Ongkir MIGO Akhir Bulan">
+                </div>
+
+                <!-- Kategori -->
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Kategori</label>
+                    <select id="b_kategori" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pamilo-softblue focus:border-pamilo-softblue outline-none">
+                        <option value="Promo">Promo Diskon</option>
+                        <option value="Info Mitra">Info Mitra & Driver</option>
+                        <option value="Kisah Sukses">Kisah Sukses</option>
+                        <option value="Pengumuman">Pengumuman Umum</option>
+                    </select>
+                </div>
+
+                <!-- URL Gambar -->
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">URL Gambar Thumbnail</label>
+                    <input type="url" id="b_gambar" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pamilo-softblue focus:border-pamilo-softblue outline-none" placeholder="https://link-gambar-anda.com/foto.jpg">
+                    <p class="text-xs text-gray-400 mt-1">*Kosongkan jika ingin pakai gambar default</p>
+                </div>
+
+                <!-- Slug (Otomatis) -->
+                <div class="md:col-span-2 hidden">
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Slug URL</label>
+                    <input type="text" id="b_slug" readonly class="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 outline-none text-gray-500">
+                </div>
+
+                <!-- Konten Berita -->
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Isi Konten Berita</label>
+                    <textarea id="b_konten" required rows="8" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pamilo-softblue focus:border-pamilo-softblue outline-none" placeholder="Tulis rincian informasi atau promo di sini..."></textarea>
+                </div>
+                
+                <!-- Status Publikasi -->
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Status Publikasi</label>
+                    <select id="b_status" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pamilo-softblue focus:border-pamilo-softblue outline-none">
+                        <option value="published">Langsung Terbitkan (Published)</option>
+                        <option value="draft">Simpan Sebagai Draft (Belum Tampil)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="pt-6 border-t border-gray-100 flex justify-end">
+                <button type="submit" id="btnSubmit" class="bg-pamilo-softblue text-white px-8 py-3 rounded-xl font-bold hover:bg-[#7a9bc0] transition shadow-lg flex items-center gap-2">
+                    <i class="fas fa-paper-plane"></i> Publikasikan Artikel
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- ========================================== -->
     <!-- 🚀 LOGIKA SUPABASE (VERSI ES MODULE MODERN) -->
     <!-- ========================================== -->
     <script type="module">
@@ -71,3 +172,5 @@
             }
         };
     </script>
+</body>
+</html>
