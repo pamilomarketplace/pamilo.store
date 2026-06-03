@@ -3,14 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin PAMILO - Tulis Berita</title>
-    <!-- Tailwind CSS -->
+    <title>Admin PAMILO - Login & Redaksi</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-    <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <script>
@@ -19,37 +15,63 @@
                 extend: {
                     fontFamily: { sans: ['Poppins', 'sans-serif'] },
                     colors: {
-                        pamilo: { dark: '#4A3525', cream: '#FFF3E0', light: '#FAF8F5', softblue: '#8CAED1' }
+                        pamilo: { dark: '#4A3525', orange: '#D35400', cream: '#FFF3E0', light: '#FAF8F5', softblue: '#8CAED1' }
                     }
                 }
             }
         }
     </script>
 </head>
-<body class="bg-pamilo-light font-sans text-gray-800 antialiased p-6 md:p-12">
+<body class="bg-pamilo-light font-sans text-gray-800 antialiased p-6 md:p-12 min-h-screen flex items-center justify-center">
 
-    <div class="max-w-4xl mx-auto bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
-        <!-- Header Admin -->
-        <div class="bg-pamilo-dark p-8 text-white flex justify-between items-center">
+    <div id="loginSection" class="w-full max-w-md bg-white rounded-3xl shadow-xl p-8 border border-gray-100 hidden">
+        <div class="text-center mb-8">
+            <div class="w-16 h-16 bg-pamilo-orange rounded-xl flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-lock text-white text-2xl"></i>
+            </div>
+            <h2 class="text-2xl font-black text-pamilo-dark">Login Admin</h2>
+            <p class="text-sm text-gray-500 mt-1">Akses khusus Dapur Redaksi PAMILO</p>
+        </div>
+
+        <form id="formLogin" onsubmit="prosesLogin(event)" class="space-y-5">
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2">Email</label>
+                <input type="email" id="login_email" required class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pamilo-orange outline-none" placeholder="admin@pamilo.store">
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2">Password</label>
+                <input type="password" id="login_password" required class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pamilo-orange outline-none" placeholder="Masukkan password">
+            </div>
+            <button type="submit" id="btnLogin" class="w-full bg-pamilo-dark text-white font-bold py-3.5 rounded-xl hover:bg-gray-800 transition mt-2 flex items-center justify-center gap-2">
+                <i class="fas fa-sign-in-alt"></i> Masuk Sistem
+            </button>
+        </form>
+    </div>
+
+    <div id="dashboardSection" class="w-full max-w-4xl mx-auto bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 hidden">
+        
+        <div class="bg-pamilo-dark p-8 text-white flex flex-col md:flex-row justify-between items-center gap-4">
             <div>
                 <h1 class="text-3xl font-black mb-1">Dapur Redaksi PAMILO</h1>
                 <p class="text-sm text-gray-300">Publikasi Informasi & Promo ke pamilo.store</p>
             </div>
-            <a href="index.html" target="_blank" class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-xl transition text-sm font-bold flex items-center gap-2">
-                <i class="fas fa-external-link-alt"></i> Lihat Website
-            </a>
+            <div class="flex gap-3">
+                <a href="index.html" target="_blank" class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-xl transition text-sm font-bold flex items-center gap-2">
+                    <i class="fas fa-external-link-alt"></i> Web Utama
+                </a>
+                <button onclick="prosesLogout()" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-xl transition text-sm font-bold flex items-center gap-2">
+                    <i class="fas fa-power-off"></i> Keluar
+                </button>
+            </div>
         </div>
 
-        <!-- Form Input Berita -->
         <form id="formBerita" onsubmit="terbitkanBerita(event)" class="p-8 space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Judul -->
                 <div class="md:col-span-2">
                     <label class="block text-sm font-bold text-gray-700 mb-2">Judul Artikel / Promo</label>
                     <input type="text" id="b_judul" oninput="buatSlug()" required class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pamilo-softblue outline-none" placeholder="Contoh: Diskon Ongkir MIGO Akhir Bulan">
                 </div>
 
-                <!-- Kategori -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-2">Kategori</label>
                     <select id="b_kategori" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pamilo-softblue outline-none">
@@ -60,26 +82,22 @@
                     </select>
                 </div>
 
-                <!-- UPLOAD GAMBAR (Baru) -->
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-2">Upload Gambar Thumbnail</label>
                     <input type="file" id="b_gambar_file" accept="image/*" class="w-full border border-gray-300 bg-white rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-pamilo-softblue outline-none file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-pamilo-softblue file:text-white hover:file:bg-[#7a9bc0] transition">
-                    <p class="text-xs text-gray-400 mt-2">*Format JPG/PNG. Kosongkan jika ingin pakai gambar default.</p>
+                    <p class="text-xs text-gray-400 mt-2">*Format JPG/PNG. Kosongkan untuk default.</p>
                 </div>
 
-                <!-- Slug (Otomatis) -->
                 <div class="md:col-span-2 hidden">
                     <label class="block text-sm font-bold text-gray-700 mb-2">Slug URL</label>
                     <input type="text" id="b_slug" readonly class="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 outline-none text-gray-500">
                 </div>
 
-                <!-- Konten Berita -->
                 <div class="md:col-span-2">
                     <label class="block text-sm font-bold text-gray-700 mb-2">Isi Konten Berita</label>
                     <textarea id="b_konten" required rows="8" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pamilo-softblue outline-none" placeholder="Tulis rincian informasi atau promo di sini..."></textarea>
                 </div>
                 
-                <!-- Status Publikasi -->
                 <div class="md:col-span-2">
                     <label class="block text-sm font-bold text-gray-700 mb-2">Status Publikasi</label>
                     <select id="b_status" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pamilo-softblue outline-none">
@@ -97,18 +115,80 @@
         </form>
     </div>
 
-    <!-- ========================================== -->
-    <!-- 🚀 LOGIKA SUPABASE & UPLOAD FILE -->
-    <!-- ========================================== -->
     <script type="module">
         import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-        // Kunci Akses Supabase
         const SUPABASE_URL = 'https://fzqdeztlpslhxwdicvnq.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6cWRlenRscHNsaHh3ZGljdm5xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5MzI3NTYsImV4cCI6MjA5NDUwODc1Nn0.3ZCCDPfawASAEU0gCZv8c3LnWNjvV9W-wulkny04CX4';
-        
         const pamiloDb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+        const loginSection = document.getElementById('loginSection');
+        const dashboardSection = document.getElementById('dashboardSection');
+
+        // --- FUNGSI CEK SESI LOGIN SAAT HALAMAN DIMUAT ---
+        async function cekSesi() {
+            const { data: { session } } = await pamiloDb.auth.getSession();
+            if (session) {
+                // Jika sudah login, tampilkan dashboard
+                loginSection.classList.add('hidden');
+                dashboardSection.classList.remove('hidden');
+            } else {
+                // Jika belum, tampilkan form login
+                loginSection.classList.remove('hidden');
+                dashboardSection.classList.add('hidden');
+            }
+        }
+
+        // --- FUNGSI LOGIN ---
+        window.prosesLogin = async function(event) {
+            event.preventDefault();
+            const btn = document.getElementById('btnLogin');
+            const email = document.getElementById('login_email').value;
+            const password = document.getElementById('login_password').value;
+
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memeriksa...';
+            btn.disabled = true;
+
+            const { data, error } = await pamiloDb.auth.signInWithPassword({
+                email: email,
+                password: password,
+            });
+
+            if (error) {
+                Swal.fire('Login Gagal', 'Email atau Password salah!', 'error');
+                btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Masuk Sistem';
+                btn.disabled = false;
+            } else {
+                Swal.fire({
+                    title: 'Selamat Datang!',
+                    text: 'Anda berhasil masuk ke Dapur Redaksi.',
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false
+                }).then(() => {
+                    document.getElementById('formLogin').reset();
+                    btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Masuk Sistem';
+                    btn.disabled = false;
+                    cekSesi(); // Panggil cek sesi untuk merubah tampilan
+                });
+            }
+        };
+
+        // --- FUNGSI LOGOUT ---
+        window.prosesLogout = async function() {
+            await pamiloDb.auth.signOut();
+            Swal.fire({
+                title: 'Logout Berhasil',
+                text: 'Sesi Anda telah diakhiri.',
+                icon: 'info',
+                timer: 1500,
+                showConfirmButton: false
+            }).then(() => {
+                cekSesi();
+            });
+        };
+
+        // --- FUNGSI REDAKSI (Sama seperti sebelumnya) ---
         window.buatSlug = function() {
             const judul = document.getElementById('b_judul').value;
             const slug = judul.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
@@ -126,11 +206,8 @@
                 let finalImageUrl = null;
                 const fileGambar = document.getElementById('b_gambar_file').files[0];
 
-                // 1. PROSES UPLOAD GAMBAR JIKA ADA
                 if (fileGambar) {
                     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengunggah Gambar...';
-                    
-                    // Buat nama file unik agar tidak bentrok
                     const fileExt = fileGambar.name.split('.').pop();
                     const fileName = `${Math.floor(Math.random() * 10000)}_${Date.now()}.${fileExt}`;
                     
@@ -140,19 +217,17 @@
 
                     if (uploadError) throw uploadError;
 
-                    // Dapatkan URL Publik gambar yang baru diupload
                     const { data: urlData } = pamiloDb.storage.from('gambar_berita').getPublicUrl(fileName);
                     finalImageUrl = urlData.publicUrl;
                 }
 
                 btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan Artikel...';
 
-                // 2. PROSES SIMPAN TEKS BERITA
                 const dataBerita = {
                     judul: document.getElementById('b_judul').value,
                     slug: document.getElementById('b_slug').value,
                     kategori: document.getElementById('b_kategori').value,
-                    gambar_thumbnail: finalImageUrl, // Masukkan link gambar dari Supabase
+                    gambar_thumbnail: finalImageUrl,
                     konten: document.getElementById('b_konten').value,
                     status: document.getElementById('b_status').value
                 };
@@ -161,7 +236,6 @@
 
                 if (dbError) throw dbError;
 
-                // 3. SUKSES
                 btn.innerHTML = '<i class="fas fa-paper-plane"></i> Publikasikan Artikel';
                 btn.disabled = false;
                 document.getElementById('formBerita').reset();
@@ -175,9 +249,8 @@
 
             } catch (err) {
                 console.error("Masalah Eksekusi:", err);
-                
                 if(err.code === '42501' || err.message.includes('row-level security')) {
-                    Swal.fire('Akses Ditolak', 'Pastikan gembok Policy untuk folder gambar_berita dan tabel berita_website sudah dibuka.', 'error');
+                    Swal.fire('Akses Ditolak', 'Pastikan gembok Policy RLS sudah dibuka untuk admin.', 'error');
                 } else {
                     Swal.fire('Sistem Error', err.message, 'error');
                 }
@@ -187,6 +260,10 @@
                 btn.disabled = false;
             }
         };
+
+        // Jalankan pengecekan sesi saat halaman pertama kali dibuka
+        document.addEventListener('DOMContentLoaded', cekSesi);
+
     </script>
 </body>
 </html>
