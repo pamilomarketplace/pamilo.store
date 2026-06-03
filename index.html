@@ -4,8 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PAMILO - Pasar Mitra Lokal Ciamis</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     
+    <meta property="og:title" content="PAMILO - Pasar Mitra Lokal Ciamis">
+    <meta property="og:description" content="Satu Aplikasi Untuk Semua Kebutuhanmu. Ojek online, belanja pasar, kuliner lokal, dan PPOB di genggaman warga Galuh!">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800">
+    <meta property="og:url" content="https://pamilo.store">
+    <meta property="og:type" content="website">
+
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -259,21 +265,36 @@
     </div>
 
     <script type="module">
-        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-
-        // Kunci Akses Supabase
-        const SUPABASE_URL = 'https://fzqdeztlpslhxwdicvnq.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6cWRlenRscHNsaHh3ZGljdm5xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5MzI3NTYsImV4cCI6MjA5NDUwODc1Nn0.3ZCCDPfawASAEU0gCZv8c3LnWNjvV9W-wulkny04CX4';
-        
-        const pamiloDb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        // Import dari file eksternal yang baru dibuat
+        import { pamiloDb } from './supabase.js';
 
         // 1. Fungsi Modal
         window.bukaModal = function(id) { document.getElementById(id).classList.remove('hidden'); };
         window.tutupModal = function(id) { document.getElementById(id).classList.add('hidden'); };
 
+        // 1.b Fitur Tutup Modal Klik di Luar (Backdrop)
+        window.addEventListener('click', function(event) {
+            const modalMitra = document.getElementById('modalMitra');
+            const modalDriver = document.getElementById('modalDriver');
+            if (event.target === modalMitra) window.tutupModal('modalMitra');
+            if (event.target === modalDriver) window.tutupModal('modalDriver');
+        });
+
+        // Fungsi Validasi Nomor HP
+        function validasiWA(nomor) {
+            return nomor.startsWith('08') || nomor.startsWith('628');
+        }
+
         // 2. Fungsi Kirim Data Mitra Toko
         window.submitMitra = async function(event) {
             event.preventDefault();
+            
+            const wa = document.getElementById('m_wa').value;
+            if (!validasiWA(wa)) {
+                Swal.fire('Format Salah', 'Nomor WhatsApp harus diawali dengan 08 atau 628', 'warning');
+                return;
+            }
+
             const btn = document.getElementById('btnSubmitMitra');
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
             btn.disabled = true;
@@ -281,7 +302,7 @@
             const data = {
                 nama_toko: document.getElementById('m_toko').value,
                 nama_pemilik: document.getElementById('m_pemilik').value,
-                no_whatsapp: document.getElementById('m_wa').value,
+                no_whatsapp: wa,
                 alamat_toko: document.getElementById('m_alamat').value
             };
 
@@ -302,13 +323,20 @@
         // 3. Fungsi Kirim Data Driver
         window.submitDriver = async function(event) {
             event.preventDefault();
+            
+            const wa = document.getElementById('d_wa').value;
+            if (!validasiWA(wa)) {
+                Swal.fire('Format Salah', 'Nomor WhatsApp harus diawali dengan 08 atau 628', 'warning');
+                return;
+            }
+
             const btn = document.getElementById('btnSubmitDriver');
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
             btn.disabled = true;
 
             const data = {
                 nama_lengkap: document.getElementById('d_nama').value,
-                no_whatsapp: document.getElementById('d_wa').value,
+                no_whatsapp: wa,
                 jenis_kendaraan: document.getElementById('d_kendaraan').value
             };
 
@@ -329,7 +357,6 @@
         // 4. Fungsi Tarik Berita ke Halaman Depan
         async function muatBerita() {
             const wadah = document.getElementById('wadahBerita');
-            
             try {
                 const { data, error } = await pamiloDb
                     .from('berita_website')
@@ -348,7 +375,6 @@
                 let htmlBerita = '';
                 data.forEach(berita => {
                     const gambar = berita.gambar_thumbnail || 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800'; 
-                    
                     htmlBerita += `
                         <div class="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100 flex flex-col">
                             <div class="h-48 overflow-hidden relative">
@@ -367,7 +393,6 @@
                         </div>
                     `;
                 });
-
                 wadah.innerHTML = htmlBerita;
             } catch (err) {
                 console.error("Gagal memuat berita:", err);
@@ -375,7 +400,6 @@
             }
         }
 
-        // Jalankan saat web dibuka
         window.addEventListener('DOMContentLoaded', muatBerita);
     </script>
 </body>
