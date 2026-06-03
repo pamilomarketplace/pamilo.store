@@ -1,33 +1,27 @@
 <!-- ========================================== -->
-    <!-- 🚀 LOGIKA SUPABASE (VERSI ANTI-CRASH) -->
+    <!-- 🚀 LOGIKA SUPABASE (VERSI ES MODULE MODERN) -->
     <!-- ========================================== -->
-    <script>
-        // 1. Sistem Penangkap Error Global
-        // Jika ada sistem yang rusak, akan muncul pop-up peringatan, bukan halaman refresh
-        window.onerror = function(msg, url, lineNo, columnNo, error) {
-            console.error('Terjadi Error Sistem:', msg, error);
-            alert('Sistem JavaScript terhenti! Detail: ' + msg);
-            return false;
-        };
+    <script type="module">
+        // 1. Mengimpor Supabase dengan jalur paling aman dan pasti terbaca
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
         // 2. Kunci Akses Supabase
         const SUPABASE_URL = 'https://fzqdeztlpslhxwdicvnq.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6cWRlenRscHNsaHh3ZGljdm5xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5MzI3NTYsImV4cCI6MjA5NDUwODc1Nn0.3ZCCDPfawASAEU0gCZv8c3LnWNjvV9W-wulkny04CX4';
         
-        // 3. Inisialisasi menggunakan nama 'pamiloDb' agar tidak bentrok dengan library bawaan
-        const { createClient } = window.supabase;
+        // 3. Inisialisasi Database PAMILO
         const pamiloDb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // Fungsi membuat URL ramah SEO (Slug) dari Judul
-        function buatSlug() {
+        // 4. Fungsi Slug - Ditempelkan ke sistem utama (window) agar bisa dibaca HTML
+        window.buatSlug = function() {
             const judul = document.getElementById('b_judul').value;
             const slug = judul.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
             document.getElementById('b_slug').value = slug;
-        }
+        };
 
-        // Eksekusi Kirim ke Supabase
-        async function terbitkanBerita(event) {
-            // TAHAN HALAMAN AGAR TIDAK REFRESH!
+        // 5. Eksekusi Utama - Ditempelkan ke sistem utama
+        window.terbitkanBerita = async function(event) {
+            // Perintah mengunci halaman agar TIDAK refresh!
             event.preventDefault(); 
             
             try {
@@ -44,16 +38,17 @@
                     status: document.getElementById('b_status').value
                 };
 
-                // Menembak data ke database
+                // Menembakkan peluru data ke Supabase
                 const { error } = await pamiloDb.from('berita_website').insert([dataBerita]);
 
-                // Kembalikan kondisi tombol
+                // Mengembalikan warna & tulisan tombol
                 btn.innerHTML = '<i class="fas fa-paper-plane"></i> Publikasikan Artikel';
                 btn.disabled = false;
 
                 if (error) {
+                    // Deteksi jika gembok RLS Supabase belum dibuka
                     if(error.code === '42501') {
-                        Swal.fire('Akses RLS Ditolak', 'Database Supabase Anda menolak data masuk. Pastikan pengaturan RLS di tabel berita_website sudah diizinkan untuk publik (Anon).', 'error');
+                        Swal.fire('Gembok Keamanan Aktif', 'Supabase menolak data. Anda harus membuka izin (Policy) Insert untuk tabel berita_website di dashboard Supabase.', 'error');
                     } else {
                         Swal.fire('Gagal Menyimpan', error.message, 'error');
                     }
@@ -67,7 +62,6 @@
                     });
                 }
             } catch (err) {
-                // Menangkap jika ada error jaringan atau bentrok kode
                 console.error("Masalah Eksekusi:", err);
                 Swal.fire('Sistem Error', err.message, 'error');
                 
@@ -75,5 +69,5 @@
                 btn.innerHTML = '<i class="fas fa-paper-plane"></i> Publikasikan Artikel';
                 btn.disabled = false;
             }
-        }
+        };
     </script>
