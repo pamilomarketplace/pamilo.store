@@ -15,23 +15,125 @@
     <!-- Supabase JS Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Poppins', 'sans-serif'] },
-                    colors: {
-                        pamilo: { 
-                            dark: '#4A3525', 
-                            orange: '#D35400', 
-                            cream: '#FFF3E0', 
-                            light: '#FAF8F5',
-                            softblue: '#8CAED1'
-                        }
-                    }
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+        // Kunci Akses Supabase
+        const SUPABASE_URL = 'https://fzqdeztlpslhxwdicvnq.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6cWRlenRscHNsaHh3ZGljdm5xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5MzI3NTYsImV4cCI6MjA5NDUwODc1Nn0.3ZCCDPfawASAEU0gCZv8c3LnWNjvV9W-wulkny04CX4';
+        
+        const pamiloDb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // 1. Fungsi Modal (Ditempel ke window agar terbaca HTML)
+        window.bukaModal = function(id) { document.getElementById(id).classList.remove('hidden'); };
+        window.tutupModal = function(id) { document.getElementById(id).classList.add('hidden'); };
+
+        // 2. Fungsi Kirim Data Mitra Toko
+        window.submitMitra = async function(event) {
+            event.preventDefault();
+            const btn = document.getElementById('btnSubmitMitra');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+            btn.disabled = true;
+
+            const data = {
+                nama_toko: document.getElementById('m_toko').value,
+                nama_pemilik: document.getElementById('m_pemilik').value,
+                no_whatsapp: document.getElementById('m_wa').value,
+                alamat_toko: document.getElementById('m_alamat').value
+            };
+
+            const { error } = await pamiloDb.from('pendaftaran_mitra').insert([data]);
+
+            btn.innerHTML = 'Kirim Pendaftaran';
+            btn.disabled = false;
+
+            if (error) {
+                Swal.fire('Oops!', 'Gagal mengirim: ' + error.message, 'error');
+            } else {
+                window.tutupModal('modalMitra');
+                document.getElementById('formMitra').reset();
+                Swal.fire('Berhasil!', 'Data pendaftaran toko Anda telah masuk ke sistem!', 'success');
+            }
+        };
+
+        // 3. Fungsi Kirim Data Driver
+        window.submitDriver = async function(event) {
+            event.preventDefault();
+            const btn = document.getElementById('btnSubmitDriver');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+            btn.disabled = true;
+
+            const data = {
+                nama_lengkap: document.getElementById('d_nama').value,
+                no_whatsapp: document.getElementById('d_wa').value,
+                jenis_kendaraan: document.getElementById('d_kendaraan').value
+            };
+
+            const { error } = await pamiloDb.from('pendaftaran_driver').insert([data]);
+
+            btn.innerHTML = 'Kirim Pendaftaran';
+            btn.disabled = false;
+
+            if (error) {
+                Swal.fire('Oops!', 'Gagal mengirim: ' + error.message, 'error');
+            } else {
+                window.tutupModal('modalDriver');
+                document.getElementById('formDriver').reset();
+                Swal.fire('Gaspol!', 'Pendaftaran Driver MIGO Anda telah tersimpan!', 'success');
+            }
+        };
+
+        // 4. Fungsi Tarik Berita ke Halaman Depan
+        async function muatBerita() {
+            const wadah = document.getElementById('wadahBerita');
+            
+            try {
+                const { data, error } = await pamiloDb
+                    .from('berita_website')
+                    .select('*')
+                    .eq('status', 'published')
+                    .order('created_at', { ascending: false })
+                    .limit(3);
+
+                if (error) throw error;
+
+                if (!data || data.length === 0) {
+                    wadah.innerHTML = `<div class="col-span-3 text-center text-gray-500 py-10 bg-white rounded-2xl border border-gray-200">Belum ada kabar atau promo terbaru saat ini.</div>`;
+                    return;
                 }
+
+                let htmlBerita = '';
+                data.forEach(berita => {
+                    const gambar = berita.gambar_thumbnail || 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800'; // Gambar default estetik
+                    
+                    htmlBerita += `
+                        <div class="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100 flex flex-col">
+                            <div class="h-48 overflow-hidden relative">
+                                <span class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-pamilo-dark text-xs font-bold px-3 py-1 rounded-full z-10">${berita.kategori}</span>
+                                <img src="${gambar}" alt="${berita.judul}" class="w-full h-full object-cover transform hover:scale-105 transition duration-500">
+                            </div>
+                            <div class="p-6 flex flex-col flex-grow">
+                                <h4 class="text-xl font-bold text-pamilo-dark mb-3 line-clamp-2">${berita.judul}</h4>
+                                <p class="text-sm text-gray-600 mb-6 line-clamp-3">${berita.konten.replace(/<[^>]*>?/gm, '')}</p>
+                                <div class="mt-auto pt-4 border-t border-gray-100">
+                                    <a href="/berita/${berita.slug}" class="inline-block text-pamilo-softblue font-bold hover:text-pamilo-dark transition">
+                                        Baca Selengkapnya <i class="fas fa-arrow-right ml-1"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                wadah.innerHTML = htmlBerita;
+            } catch (err) {
+                console.error("Gagal memuat berita:", err);
+                wadah.innerHTML = `<div class="col-span-3 text-center text-red-500 py-10">Koneksi terputus. Silakan muat ulang halaman.</div>`;
             }
         }
+
+        // Jalankan saat web dibuka
+        window.addEventListener('DOMContentLoaded', muatBerita);
     </script>
 </head>
 <body class="bg-pamilo-light font-sans text-gray-800 antialiased overflow-x-hidden relative">
