@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Baca Berita - PAMILO</title>
-    <!-- Tailwind CSS -->
+
+    <meta property="og:title" content="Baca Berita - PAMILO">
+    <meta property="og:description" content="Kabar terbaru, informasi mitra, dan promo menarik dari PAMILO.">
+    <meta property="og:type" content="article">
+
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <script>
         tailwind.config = {
             theme: {
@@ -26,14 +29,11 @@
         }
     </script>
 
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 </head>
 <body class="bg-pamilo-light font-sans text-gray-800 antialiased overflow-x-hidden relative flex flex-col min-h-screen">
 
-    <!-- NAVBAR KHUSUS BACA BERITA -->
     <nav class="fixed w-full z-40 bg-white shadow-sm border-b border-gray-100">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
@@ -48,17 +48,14 @@
         </div>
     </nav>
 
-    <!-- KONTEN ARTIKEL -->
     <main class="flex-grow pt-32 pb-20">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            <!-- Tampilan Loading (Saat menarik data) -->
             <div id="loadingState" class="text-center py-24">
                 <i class="fas fa-spinner fa-spin text-4xl text-pamilo-softblue mb-4"></i>
                 <p class="text-gray-500 font-medium">Membuka lembaran informasi...</p>
             </div>
 
-            <!-- Tampilan Error (Jika artikel tidak ada/dihapus) -->
             <div id="errorState" class="hidden text-center py-24 bg-white rounded-3xl border border-gray-100 shadow-sm">
                 <i class="fas fa-search text-6xl text-gray-300 mb-6"></i>
                 <h2 class="text-2xl font-black text-pamilo-dark mb-2">Berita Tidak Ditemukan</h2>
@@ -66,7 +63,6 @@
                 <a href="index.html" class="bg-pamilo-orange text-white px-8 py-3 rounded-full font-bold hover:bg-[#A04000] transition">Kembali ke Beranda</a>
             </div>
 
-            <!-- Tampilan Artikel Utama -->
             <article id="articleContent" class="hidden bg-white rounded-[2rem] shadow-xl overflow-hidden border border-gray-100">
                 <div id="a_gambar_wadah" class="w-full h-64 md:h-96 bg-gray-100 relative">
                     <span id="a_kategori" class="absolute top-6 left-6 bg-white/90 backdrop-blur-md text-pamilo-dark text-sm font-bold px-4 py-2 rounded-full z-10 shadow-sm"></span>
@@ -81,7 +77,6 @@
                     
                     <h1 id="a_judul" class="text-3xl md:text-4xl font-black text-pamilo-dark mb-8 leading-tight"></h1>
                     
-                    <!-- Area Teks Berita -->
                     <div id="a_konten" class="text-gray-700 leading-relaxed space-y-4 whitespace-pre-wrap text-[1.1rem]"></div>
                 </div>
             </article>
@@ -89,22 +84,12 @@
         </div>
     </main>
 
-    <!-- FOOTER -->
     <footer class="bg-[#2D1F16] text-gray-400 py-10 text-center text-sm">
         <p>&copy; 2026 PAMILO. All rights reserved.</p>
     </footer>
 
-    <!-- ========================================== -->
-    <!-- 🚀 LOGIKA PENARIK DATA DARI SUPABASE -->
-    <!-- ========================================== -->
     <script type="module">
-        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-
-        // Kunci Supabase Anda
-        const SUPABASE_URL = 'https://fzqdeztlpslhxwdicvnq.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6cWRlenRscHNsaHh3ZGljdm5xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5MzI3NTYsImV4cCI6MjA5NDUwODc1Nn0.3ZCCDPfawASAEU0gCZv8c3LnWNjvV9W-wulkny04CX4';
-        
-        const pamiloDb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        import { pamiloDb } from './supabase.js';
 
         async function muatDetailBerita() {
             // Mengambil 'slug' dari alamat URL browser
