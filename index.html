@@ -310,7 +310,7 @@
                 alamat_toko: document.getElementById('m_alamat').value
             };
 
-            const { error } = await pamiloDb.from('pendaftaran_mitra').insert([data]);
+            const { error } = await pamiloDb.from('pendaftaran_toko_web').insert([data]);
 
             btn.innerHTML = 'Kirim Pendaftaran';
             btn.disabled = false;
@@ -344,7 +344,7 @@
                 jenis_kendaraan: document.getElementById('d_kendaraan').value
             };
 
-            const { error } = await pamiloDb.from('pendaftaran_driver').insert([data]);
+            const { error } = await pamiloDb.from('pendaftaran_driver_web').insert([data]);
 
             btn.innerHTML = 'Kirim Pendaftaran';
             btn.disabled = false;
