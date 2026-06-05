@@ -50,6 +50,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- CSS Tambahan untuk Kursor Animasi Mengetik -->
+    <style>
+        .typing-cursor {
+            display: inline-block;
+            width: 3px;
+            background-color: #D35400;
+            margin-left: 2px;
+            animation: blink 0.8s infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
 </head>
 <body class="bg-pamilo-cream font-sans text-gray-800 antialiased overflow-x-hidden relative">
 
@@ -58,7 +73,6 @@
             <div class="flex justify-between items-center h-20">
                 <div class="flex-shrink-0 flex items-center gap-3">
                     <img src="icon.png" alt="Logo PAMILO" class="w-10 h-10 rounded-xl object-cover shadow-sm">
-                    
                     <span class="font-black text-2xl tracking-wide text-pamilo-dark">PAMILO</span>
                 </div>
                 <div class="hidden md:flex space-x-8 items-center">
@@ -82,10 +96,13 @@
                     <div class="inline-block bg-white text-pamilo-orange font-bold px-4 py-1.5 rounded-full text-sm mb-6 shadow-sm border border-pamilo-orange/20">
                         📍 Ekosistem Digital Kebanggaan Ciamis
                     </div>
-                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-pamilo-dark leading-tight mb-6">
+                    
+                    <!-- 🚀 INI DIA EFEK TEKS MENGETIKNYA -->
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-pamilo-dark leading-tight mb-6 h-auto min-h-[120px] md:min-h-[150px]">
                         Satu Aplikasi Untuk <br>
-                        <span class="text-pamilo-orange">Semua Kebutuhanmu.</span>
+                        <span id="typed-text" class="text-pamilo-orange"></span><span class="typing-cursor">&nbsp;</span>
                     </h1>
+                    
                     <p class="text-lg text-gray-700 mb-8 max-w-lg mx-auto md:mx-0">
                         Mulai dari pesan Ojek MIGO, belanja ke pasar tradisional, jajan kuliner lokal, hingga bayar pulsa. Semua ada di genggaman warga Galuh!
                     </p>
@@ -102,7 +119,15 @@
                 <div class="relative hidden md:block" data-aos="fade-left">
                     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-pamilo-orange/20 rounded-full blur-3xl"></div>
                     <div class="relative border-8 border-gray-900 rounded-[2.5rem] shadow-2xl w-64 h-[500px] mx-auto overflow-hidden bg-white">
-                        <img src="mockup-app.jpg" alt="Tampilan Aplikasi PAMILO Ciamis" class="w-full h-full object-cover">
+                        
+                        <!-- 🚀 INI DIA EFEK VIDEO DI DALAM MOCKUP HP -->
+                        <!-- Pastikan file "video-pamilo.mp4" sudah ada di hosting/folder Tuan! -->
+                        <video autoplay loop muted playsinline class="w-full h-full object-cover">
+                            <source src="video-pamilo.mp4" type="video/mp4">
+                            <!-- Fallback ke gambar jika video gagal dimuat / dihapus -->
+                            <img src="mockup-app.jpg" alt="Tampilan Aplikasi PAMILO Ciamis" class="w-full h-full object-cover">
+                        </video>
+                        
                     </div>
                 </div>
 
@@ -110,6 +135,7 @@
         </div>
     </section>
 
+    <!-- ... SISA KODE LAYANAN, GABUNG MITRA, DAN BERITA TETAP SAMA ... -->
     <section id="layanan" class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-sm font-bold text-pamilo-orange uppercase tracking-widest mb-2">Layanan Kami</h2>
@@ -266,6 +292,7 @@
         </div>
     </footer>
 
+    <!-- MODAL MITRA & DRIVER -->
     <div id="modalMitra" class="fixed inset-0 bg-black/60 z-50 hidden flex justify-center items-center backdrop-blur-sm transition-opacity">
         <div class="bg-white rounded-3xl p-8 w-[90%] max-w-md relative shadow-2xl">
             <button onclick="tutupModal('modalMitra')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-800">
@@ -330,14 +357,13 @@
         </div>
     </div>
 
+    <!-- SCRIPT SUPABASE & MODAL -->
     <script type="module">
         import { pamiloDb } from './supabase.js';
 
-        // 1. Fungsi Modal
         window.bukaModal = function(id) { document.getElementById(id).classList.remove('hidden'); };
         window.tutupModal = function(id) { document.getElementById(id).classList.add('hidden'); };
 
-        // 1.b Fitur Tutup Modal Klik di Luar (Backdrop)
         window.addEventListener('click', function(event) {
             const modalMitra = document.getElementById('modalMitra');
             const modalDriver = document.getElementById('modalDriver');
@@ -345,21 +371,17 @@
             if (event.target === modalDriver) window.tutupModal('modalDriver');
         });
 
-        // Fungsi Validasi Nomor HP
         function validasiWA(nomor) {
             return nomor.startsWith('08') || nomor.startsWith('628');
         }
 
-        // 2. Fungsi Kirim Data Mitra Toko
         window.submitMitra = async function(event) {
             event.preventDefault();
-            
             const wa = document.getElementById('m_wa').value;
             if (!validasiWA(wa)) {
                 Swal.fire('Format Salah', 'Nomor WhatsApp harus diawali dengan 08 atau 628', 'warning');
                 return;
             }
-
             const btn = document.getElementById('btnSubmitMitra');
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
             btn.disabled = true;
@@ -385,16 +407,13 @@
             }
         };
 
-        // 3. Fungsi Kirim Data Driver
         window.submitDriver = async function(event) {
             event.preventDefault();
-            
             const wa = document.getElementById('d_wa').value;
             if (!validasiWA(wa)) {
                 Swal.fire('Format Salah', 'Nomor WhatsApp harus diawali dengan 08 atau 628', 'warning');
                 return;
             }
-
             const btn = document.getElementById('btnSubmitDriver');
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
             btn.disabled = true;
@@ -419,7 +438,6 @@
             }
         };
 
-        // 4. Fungsi Tarik Berita ke Halaman Depan
         async function muatBerita() {
             const wadah = document.getElementById('wadahBerita');
             try {
@@ -468,6 +486,62 @@
         window.addEventListener('DOMContentLoaded', muatBerita);
     </script>
 
+    <!-- SCRIPT EFEK MENGETIK OTOMATIS (TYPING EFFECT) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const kataKunci = [
+                "Semua Kebutuhanmu.", 
+                "Pesan Ojek MIGO.", 
+                "Belanja di Pasar.", 
+                "Pesan Kuliner Lokal.",
+                "Bayar Tagihan PPOB."
+            ];
+            let kataIndex = 0;
+            let hurufIndex = 0;
+            let currentText = '';
+            let isDeleting = false;
+            
+            const typingSpeed = 100; // Kecepatan ngetik
+            const deletingSpeed = 50; // Kecepatan hapus
+            const delayBetweenWords = 2000; // Jeda sebelum dihapus (2 detik)
+            
+            const typedTextElement = document.getElementById('typed-text');
+
+            function ketikTeks() {
+                const kataSekarang = kataKunci[kataIndex];
+                
+                if (isDeleting) {
+                    currentText = kataSekarang.substring(0, hurufIndex - 1);
+                    hurufIndex--;
+                } else {
+                    currentText = kataSekarang.substring(0, hurufIndex + 1);
+                    hurufIndex++;
+                }
+
+                typedTextElement.textContent = currentText;
+
+                let animasiTimeout = isDeleting ? deletingSpeed : typingSpeed;
+
+                // Jika kata selesai diketik
+                if (!isDeleting && currentText === kataSekarang) {
+                    animasiTimeout = delayBetweenWords;
+                    isDeleting = true;
+                } 
+                // Jika kata selesai dihapus
+                else if (isDeleting && currentText === '') {
+                    isDeleting = false;
+                    kataIndex = (kataIndex + 1) % kataKunci.length;
+                    animasiTimeout = 500; // Jeda sebelum mulai ngetik kata baru
+                }
+
+                setTimeout(ketikTeks, animasiTimeout);
+            }
+
+            // Mulai animasi
+            setTimeout(ketikTeks, 1000);
+        });
+    </script>
+
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
@@ -481,9 +555,9 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         AOS.init({
-            once: true, // Animasi hanya berjalan satu kali saat pertama kali di-scroll
-            duration: 800, // Durasi animasi (0.8 detik)
-            offset: 100, // Jarak scroll sebelum animasi dimulai
+            once: true, 
+            duration: 800, 
+            offset: 100, 
         });
     </script>
     
