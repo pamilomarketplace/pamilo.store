@@ -120,13 +120,7 @@
                     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-pamilo-orange/20 rounded-full blur-3xl"></div>
                     <div class="relative border-8 border-gray-900 rounded-[2.5rem] shadow-2xl w-64 h-[500px] mx-auto overflow-hidden bg-white">
                         
-                        <!-- 🚀 INI DIA EFEK VIDEO DI DALAM MOCKUP HP -->
-                        <!-- Pastikan file "video-pamilo.mp4" sudah ada di hosting/folder Tuan! -->
-                        <video autoplay loop muted playsinline class="w-full h-full object-cover">
-                            <source src="video-pamilo.mp4" type="video/mp4">
-                            <!-- Fallback ke gambar jika video gagal dimuat / dihapus -->
-                            <img src="mockup-app.jpg" alt="Tampilan Aplikasi PAMILO Ciamis" class="w-full h-full object-cover">
-                        </video>
+                        <img src="mockup-app.jpg" alt="Tampilan Aplikasi PAMILO Ciamis" class="w-full h-full object-cover">
                         
                     </div>
                 </div>
@@ -185,29 +179,48 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="bg-white text-pamilo-dark rounded-3xl p-8 lg:p-12 shadow-2xl relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-pamilo-orange/10 rounded-bl-full"></div>
-                    <div class="w-16 h-16 bg-pamilo-orange rounded-xl flex items-center justify-center mb-6">
-                        <i class="fas fa-store text-white text-2xl"></i>
+                
+                <!-- 🚀 KARTU 1: MITRA MERCHANT DENGAN VIDEO -->
+                <div class="bg-white text-pamilo-dark rounded-3xl p-6 lg:p-8 shadow-2xl relative flex flex-col group">
+                    <!-- Bingkai Video -->
+                    <div class="w-full h-52 bg-gray-100 rounded-2xl overflow-hidden mb-6 relative">
+                        <video autoplay loop muted playsinline class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                            <source src="video-mitra.mp4" type="video/mp4">
+                        </video>
+                        <!-- Lencana Ikon Mengambang -->
+                        <div class="absolute top-4 right-4 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg text-pamilo-orange z-10">
+                            <i class="fas fa-store text-xl"></i>
+                        </div>
                     </div>
+                    
                     <h3 class="text-2xl font-black mb-3">Daftar Mitra Merchant</h3>
-                    <p class="text-gray-600 mb-8">Punya warung, restoran, atau jual produk UMKM? Jangkau ribuan pelanggan baru di Ciamis.</p>
-                    <button onclick="bukaModal('modalMitra')" class="inline-block bg-pamilo-dark text-white px-8 py-3 rounded-full font-bold hover:bg-gray-800 transition">
+                    <p class="text-gray-600 mb-8 flex-grow">Punya warung, restoran, atau jual produk UMKM? Jangkau ribuan pelanggan baru di Ciamis.</p>
+                    <button onclick="bukaModal('modalMitra')" class="w-full bg-pamilo-dark text-white px-8 py-3.5 rounded-full font-bold hover:bg-gray-800 transition text-center">
                         Daftar Buka Toko <i class="fas fa-arrow-right ml-2"></i>
                     </button>
                 </div>
 
-                <div class="bg-pamilo-orange text-white rounded-3xl p-8 lg:p-12 shadow-2xl relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-bl-full"></div>
-                    <div class="w-16 h-16 bg-white rounded-xl flex items-center justify-center mb-6">
-                        <i class="fas fa-motorcycle text-pamilo-orange text-2xl"></i>
+                <!-- 🚀 KARTU 2: DRIVER MIGO DENGAN VIDEO -->
+                <div class="bg-pamilo-orange text-white rounded-3xl p-6 lg:p-8 shadow-2xl relative flex flex-col group">
+                    <!-- Bingkai Video -->
+                    <div class="w-full h-52 bg-white/20 rounded-2xl overflow-hidden mb-6 relative">
+                        <!-- Pastikan nama file di HP/Laptop Tuan sudah diganti jadi video-driver.mp4 (tanpa spasi) -->
+                        <video autoplay loop muted playsinline class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                            <source src="video-driver.mp4" type="video/mp4">
+                        </video>
+                        <!-- Lencana Ikon Mengambang -->
+                        <div class="absolute top-4 right-4 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg text-pamilo-orange z-10">
+                            <i class="fas fa-motorcycle text-xl"></i>
+                        </div>
                     </div>
+
                     <h3 class="text-2xl font-black mb-3">Daftar Driver MIGO</h3>
-                    <p class="text-white/90 mb-8">Punya motor/mobil dan waktu luang? Jadilah pahlawan pengiriman lokal. Atur jam kerjamu sendiri.</p>
-                    <button onclick="bukaModal('modalDriver')" class="inline-block bg-white text-pamilo-orange px-8 py-3 rounded-full font-bold hover:bg-gray-100 transition">
+                    <p class="text-white/90 mb-8 flex-grow">Punya motor/mobil dan waktu luang? Jadilah pahlawan pengiriman lokal. Atur jam kerjamu sendiri.</p>
+                    <button onclick="bukaModal('modalDriver')" class="w-full bg-white text-pamilo-orange px-8 py-3.5 rounded-full font-bold hover:bg-gray-100 transition text-center">
                         Daftar Jadi Driver <i class="fas fa-arrow-right ml-2"></i>
                     </button>
                 </div>
+
             </div>
         </div>
     </section>
