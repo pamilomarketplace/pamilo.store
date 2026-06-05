@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kebijakan Privasi - PAMILO</title>
+    
+    <link rel="icon" href="icon.png" type="image/png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Poppins', 'sans-serif'] },
+                    colors: {
+                        pamilo: { 
+                            dark: '#4A3525', 
+                            orange: '#D35400', 
+                            cream: '#FFF3E0', 
+                            light: '#FAF8F5',
+                            softblue: '#8CAED1'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+</head>
+<body class="bg-pamilo-light font-sans text-gray-800 antialiased">
+
+    <!-- NAVBAR SEDERHANA -->
+    <nav class="fixed w-full z-40 bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-3 hover:opacity-80 transition">
+                    <i class="fas fa-arrow-left text-pamilo-dark text-xl md:hidden"></i>
+                    <img src="icon.png" alt="Logo PAMILO" class="w-10 h-10 rounded-xl object-cover shadow-sm hidden md:block">
+                    <span class="font-black text-2xl tracking-wide text-pamilo-dark">PAMILO</span>
+                </a>
+                <div class="flex space-x-4 items-center">
+                    <a href="index.html" class="text-sm md:text-base text-gray-600 hover:text-pamilo-orange font-semibold transition flex items-center gap-2">
+                        <i class="fas fa-home"></i> <span class="hidden md:inline">Kembali ke Beranda</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HEADER HALAMAN -->
+    <section class="pt-32 pb-12 bg-pamilo-dark text-white text-center rounded-b-[3rem] shadow-lg">
+        <div class="max-w-3xl mx-auto px-4">
+            <h1 class="text-3xl md:text-5xl font-black mb-4">Kebijakan Privasi</h1>
+            <p class="text-gray-300">Pembaruan Terakhir: Juni 2026</p>
+        </div>
+    </section>
+
+    <!-- KONTEN ATURAN -->
+    <section class="py-16">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-3xl shadow-xl p-8 md:p-12 border border-gray-100">
+                
+                <div class="prose prose-orange max-w-none text-gray-600">
+                    <p class="text-lg font-semibold text-pamilo-dark mb-6">
+                        PAMILO sangat menghargai dan melindungi data privasi Anda. Kebijakan Privasi ini menjelaskan bagaimana kami mengumpulkan, menggunakan, menyimpan, dan membagikan informasi pribadi Anda saat menggunakan Aplikasi PAMILO.
+                    </p>
+
+                    <hr class="my-8 border-gray-200">
+
+                    <h3 class="text-xl font-bold text-pamilo-dark mb-3">1. Informasi yang Kami Kumpulkan</h3>
+                    <p class="mb-4">Saat Anda menggunakan Aplikasi, kami mungkin mengumpulkan data berikut:</p>
+                    <ul class="list-disc pl-5 space-y-2 mb-8">
+                        <li><strong>Data Pribadi:</strong> Nama, alamat email, nomor telepon (WhatsApp), dan foto profil.</li>
+                        <li><strong>Data Lokasi (GPS):</strong> Kami mengumpulkan data lokasi perangkat Anda untuk menghitung jarak pengiriman, mencari Driver terdekat, dan memberikan estimasi waktu (khususnya fitur MIGO Ride).</li>
+                        <li><strong>Data Transaksi:</strong> Riwayat pesanan, top-up saldo PAMILO-Pay, dan riwayat obrolan (chat) dengan Driver atau Merchant di dalam aplikasi.</li>
+                    </ul>
+
+                    <h3 class="text-xl font-bold text-pamilo-dark mb-3">2. Penggunaan Informasi</h3>
+                    <p class="mb-4">Kami menggunakan informasi Anda untuk:</p>
+                    <ul class="list-disc pl-5 space-y-2 mb-8">
+                        <li>Memproses, memverifikasi, dan memfasilitasi pesanan Anda.</li>
+                        <li>Menghubungkan Anda dengan Mitra Driver MIGO dan Mitra Merchant Pasar PAMILO.</li>
+                        <li>Meningkatkan kualitas layanan dan keamanan sistem dari tindakan penipuan (fraud).</li>
+                        <li>Menghubungi Anda terkait pembaruan layanan, promo, atau bantuan teknis (Customer Service).</li>
+                    </ul>
+
+                    <h3 class="text-xl font-bold text-pamilo-dark mb-3">3. Pembagian Data kepada Pihak Ketiga</h3>
+                    <p class="mb-8">
+                        PAMILO <strong>TIDAK PERNAH</strong> menjual atau menyewakan data pribadi Anda kepada pihak ketiga. Kami hanya membagikan data Anda (seperti Nama, Nomor Telepon, dan Alamat Pengiriman) <strong>secara terbatas</strong> kepada Mitra Driver dan Mitra Merchant semata-mata untuk keperluan penyelesaian pesanan Anda.
+                    </p>
+
+                    <h3 class="text-xl font-bold text-pamilo-dark mb-3">4. Penyimpanan dan Keamanan Data</h3>
+                    <p class="mb-8">
+                        Data Anda disimpan di server <em>Cloud Database</em> (Supabase) yang dilengkapi dengan sistem keamanan enkripsi. Meskipun kami berusaha keras melindungi data Anda, tidak ada transmisi data di internet yang 100% aman. Anda juga bertanggung jawab menjaga keamanan perangkat dan kata sandi Anda.
+                    </p>
+
+                    <h3 class="text-xl font-bold text-pamilo-dark mb-3">5. Hak Pengguna (Penghapusan Akun)</h3>
+                    <p class="mb-8">
+                        Anda berhak sepenuhnya untuk meminta penghapusan akun dan data pribadi Anda dari sistem kami. Permintaan penghapusan dapat dilakukan langsung melalui menu "Pengaturan Akun" di dalam Aplikasi PAMILO atau dengan menghubungi layanan Customer Service kami.
+                    </p>
+
+                    <h3 class="text-xl font-bold text-pamilo-dark mb-3">6. Hubungi Kami</h3>
+                    <p>
+                        Jika Anda memiliki kekhawatiran terkait privasi data Anda, silakan hubungi kami melalui: <br><br>
+                        <strong>WhatsApp:</strong> +62 838-2939-2370 <br>
+                        <strong>Email:</strong> cs@pamilo.store
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER SEDERHANA -->
+    <footer class="bg-[#2D1F16] text-gray-500 py-8 text-center text-sm">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>&copy; 2026 PAMILO (Pasar Mitra Lokal). Hak Cipta Dilindungi.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
