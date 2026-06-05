@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syarat & Ketentuan - PAMILO</title>
+    
+    <link rel="icon" href="icon.png" type="image/png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Poppins', 'sans-serif'] },
+                    colors: {
+                        pamilo: { 
+                            dark: '#4A3525', 
+                            orange: '#D35400', 
+                            cream: '#FFF3E0', 
+                            light: '#FAF8F5',
+                            softblue: '#8CAED1'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+</head>
+<body class="bg-pamilo-light font-sans text-gray-800 antialiased">
+
+    <!-- NAVBAR SEDERHANA -->
+    <nav class="fixed w-full z-40 bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-3 hover:opacity-80 transition">
+                    <i class="fas fa-arrow-left text-pamilo-dark text-xl md:hidden"></i>
+                    <img src="icon.png" alt="Logo PAMILO" class="w-10 h-10 rounded-xl object-cover shadow-sm hidden md:block">
+                    <span class="font-black text-2xl tracking-wide text-pamilo-dark">PAMILO</span>
+                </a>
+                <div class="flex space-x-4 items-center">
+                    <a href="index.html" class="text-sm md:text-base text-gray-600 hover:text-pamilo-orange font-semibold transition flex items-center gap-2">
+                        <i class="fas fa-home"></i> <span class="hidden md:inline">Kembali ke Beranda</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HEADER HALAMAN -->
+    <section class="pt-32 pb-12 bg-pamilo-dark text-white text-center rounded-b-[3rem] shadow-lg">
+        <div class="max-w-3xl mx-auto px-4">
+            <h1 class="text-3xl md:text-5xl font-black mb-4">Syarat & Ketentuan</h1>
+            <p class="text-gray-300">Pembaruan Terakhir: Juni 2026</p>
+        </div>
+    </section>
+
+    <!-- KONTEN ATURAN -->
+    <section class="py-16">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-3xl shadow-xl p-8 md:p-12 border border-gray-100">
+                
+                <div class="prose prose-orange max-w-none text-gray-600">
+                    <p class="text-lg font-semibold text-pamilo-dark mb-6">
+                        Selamat datang di aplikasi PAMILO (Pasar Mitra Lokal). Dengan mengunduh, menginstal, dan/atau menggunakan Aplikasi PAMILO, Anda setuju bahwa Anda telah membaca, memahami, dan menyetujui seluruh Syarat dan Ketentuan di bawah ini.
+                    </p>
+
+                    <hr class="my-8 border-gray-200">
+
+                    <h3 class="text-xl font-bold text-pamilo-dark mb-3">1. Definisi Umum</h3>
+                    <ul class="list-disc pl-5 space-y-2 mb-8">
+                        <li><strong>Aplikasi</strong> adalah aplikasi PAMILO yang tersedia di Android dan platform lainnya yang dikelola oleh pihak PAMILO Ciamis.</li>
+                        <li><strong>Pengguna</strong> adalah pihak yang terdaftar dan menggunakan Aplikasi untuk memesan layanan (MIGO Ride, PAMILO Food, Pasar PAMILO, PPOB).</li>
+                        <li><strong>Mitra Driver (MIGO)</strong> adalah pihak independen yang bersedia menerima pesanan pengantaran dari Pengguna melalui Aplikasi.</li>
+                        <li><strong>Mitra Merchant</strong> adalah pemilik toko, warung, atau UMKM yang menjual produknya melalui Aplikasi.</li>
+                    </ul>
+
+                    <h3 class="text-xl font-bold text-pamilo-dark mb-3">2. Akun dan Keamanan</h3>
+                    <ul class="list-disc pl-5 space-y-2 mb-8">
+                        <li>Anda wajib memberikan informasi yang akurat, lengkap, dan terkini saat melakukan pendaftaran.</li>
+                        <li>Anda bertanggung jawab penuh untuk menjaga kerahasiaan kata sandi dan kode OTP Anda. PAMILO tidak pernah meminta kode OTP untuk alasan apa pun.</li>
+                        <li>PAMILO berhak membekukan atau memblokir akun yang terdeteksi melakukan kecurangan, pesanan fiktif, atau melanggar hukum.</li>
+                    </ul>
+
+                    <h3 class="text-xl font-bold text-pamilo-dark mb-3">3. Layanan Transportasi & Pengiriman (MIGO)</h3>
+                    <ul class="list-disc pl-5 space-y-2 mb-8">
+                        <li>Mitra Driver MIGO adalah penyedia layanan independen dan bukan karyawan PAMILO. PAMILO hanya bertindak sebagai perantara teknologi.</li>
+                        <li>Pengguna dilarang menggunakan layanan MIGO untuk mengirimkan barang terlarang, narkotika, barang berbahaya, atau hewan yang tidak dikemas dengan aman sesuai hukum di Indonesia.</li>
+                        <li>Segala bentuk kerusakan atau kehilangan barang berharga saat pengiriman di luar tanggung jawab PAMILO, namun kami akan membantu proses mediasi antara Pengguna dan Mitra Driver.</li>
+                    </ul>
+
+                    <h3 class="text-xl font-bold text-pamilo-dark mb-3">4. Transaksi & Saldo PAMILO-Pay</h3>
+                    <ul class="list-disc pl-5 space-y-2 mb-8">
+                        <li>Saldo PAMILO-Pay hanya dapat digunakan untuk transaksi di dalam ekosistem PAMILO (Belanja, Ojek, dan PPOB).</li>
+                        <li>Top-up saldo dilakukan melalui metode resmi yang disediakan di dalam Aplikasi. Kami tidak bertanggung jawab atas transfer ke rekening di luar instruksi resmi Aplikasi.</li>
+                        <li>Semua transaksi yang telah berhasil diproses tidak dapat dibatalkan atau dikembalikan, kecuali terdapat kesalahan sistem dari pihak PAMILO.</li>
+                    </ul>
+
+                    <h3 class="text-xl font-bold text-pamilo-dark mb-3">5. Batasan Tanggung Jawab</h3>
+                    <p class="mb-8">
+                        Kami selalu berusaha menjaga Aplikasi PAMILO beroperasi tanpa gangguan. Namun, kami tidak dapat menjamin bahwa Aplikasi akan selalu terbebas dari kendala teknis (server maintenance, gangguan sinyal, atau masalah pihak ketiga). PAMILO tidak bertanggung jawab atas kerugian finansial yang diakibatkan oleh gangguan tersebut.
+                    </p>
+
+                    <h3 class="text-xl font-bold text-pamilo-dark mb-3">6. Hubungi Kami</h3>
+                    <p>
+                        Jika Anda memiliki pertanyaan mengenai Syarat dan Ketentuan ini, silakan hubungi tim kami melalui: <br><br>
+                        <strong>WhatsApp:</strong> +62 838-2939-2370 <br>
+                        <strong>Email:</strong> cs@pamilo.store <br>
+                        <strong>Kantor:</strong> Ciamis, Jawa Barat, Indonesia
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER SEDERHANA -->
+    <footer class="bg-[#2D1F16] text-gray-500 py-8 text-center text-sm">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>&copy; 2026 PAMILO (Pasar Mitra Lokal). Hak Cipta Dilindungi.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
