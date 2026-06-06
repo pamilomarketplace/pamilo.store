@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.agieldoank85.pamilo",
+      "sha256_cert_fingerprints": [
+        "BD:65:C7:A6:0A:04:3C:40:5E:63:99:CA:4F:C1:46:56:49:DD:FF:5F:1E:EA:AE:9A:34:EC:1D:9D:73:F3:CF:20"
+      ]
+    }
+  }
+]
