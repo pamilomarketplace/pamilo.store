@@ -1,8 +1,15 @@
 {
-"rewrites": [
-{
-"source": "/.well-known/(.*)",
-"destination": "/.well-known/$1"
-}
-]
+  "rewrites": [
+    {
+      "source": "/.well-known/(.*)",
+      "destination": "/.well-known/$1"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/reels/:path*",
+      "destination": "/",
+      "permanent": false
+    }
+  ]
 }
