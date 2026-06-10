@@ -25,7 +25,7 @@
 
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#D35400">
-    <link rel="apple-touch-icon" href="icon-192.png">
+    <link class="apple-touch-icon" href="icon-192.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -77,15 +77,16 @@
                 </div>
                 
                 <!-- Menu Desktop -->
-                <!-- Lilis ubah ke lg:flex dan text-sm agar muat banyak menu -->
                 <div class="hidden lg:flex space-x-6 items-center">
                     <a href="#beranda" class="text-gray-600 hover:text-pamilo-orange font-semibold transition text-sm">Beranda</a>
                     <a href="#layanan" class="text-gray-600 hover:text-pamilo-orange font-semibold transition text-sm">Layanan</a>
                     <a href="#gabung" class="text-gray-600 hover:text-pamilo-orange font-semibold transition text-sm">Mitra</a>
-                    <a href="#berita" class="text-gray-600 hover:text-pamilo-orange font-semibold transition text-sm">Berita</a>
                     
-                    <!-- 🚀 TAMBAHAN MENU LEGAL -->
-                    <div class="w-px h-5 bg-gray-300 mx-2"></div> <!-- Garis Pemisah Tipis -->
+                    <!-- 🚀 SINKRONISASI TAUTAN: Diarahkan langsung secara fisik ke berkas info-galuh.html -->
+                    <a href="info-galuh.html" class="text-gray-600 hover:text-pamilo-orange font-semibold transition text-sm">Info Galuh</a>
+                    
+                    <!-- TAMBAHAN MENU LEGAL -->
+                    <div class="w-px h-5 bg-gray-300 mx-2"></div>
                     <a href="syarat-ketentuan.html" class="text-gray-600 hover:text-pamilo-orange font-semibold transition text-sm">Syarat & Ketentuan</a>
                     <a href="kebijakan-privasi.html" class="text-gray-600 hover:text-pamilo-orange font-semibold transition text-sm">Privasi</a>
                     
@@ -106,7 +107,7 @@
                         📍 Ekosistem Digital Kebanggaan Ciamis
                     </div>
                     
-                    <!-- 🚀 EFEK TEKS MENGETIK -->
+                    <!-- EFEK TEKS MENGETIK -->
                     <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-pamilo-dark leading-tight mb-6 h-auto min-h-[120px] md:min-h-[150px]">
                         Satu Aplikasi Untuk <br>
                         <span id="typed-text" class="text-pamilo-orange"></span><span class="typing-cursor">&nbsp;</span>
@@ -124,7 +125,7 @@
                         </a>
                     </div>
 
-                    <!-- 🚀 TOMBOL BAGIKAN (SHARE) -->
+                    <!-- TOMBOL BAGIKAN (SHARE) -->
                     <div class="mt-10 pt-6 border-t border-gray-200/60 flex flex-col sm:flex-row items-center md:justify-start justify-center gap-4">
                         <span class="text-sm font-bold text-gray-500">Bagikan PAMILO ke warga lain:</span>
                         <div class="flex gap-3">
@@ -145,9 +146,7 @@
                 <div class="relative hidden md:block" data-aos="fade-left">
                     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-pamilo-orange/20 rounded-full blur-3xl"></div>
                     <div class="relative border-8 border-gray-900 rounded-[2.5rem] shadow-2xl w-64 h-[500px] mx-auto overflow-hidden bg-white">
-                        
                         <img src="mockup-app.jpg" alt="Tampilan Aplikasi PAMILO Ciamis" class="w-full h-full object-cover">
-                        
                     </div>
                 </div>
 
@@ -205,7 +204,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 
-                <!-- 🚀 KARTU 1: MITRA MERCHANT DENGAN VIDEO -->
+                <!-- KARTU 1: MITRA MERCHANT -->
                 <div class="bg-white text-pamilo-dark rounded-3xl p-6 lg:p-8 shadow-2xl relative flex flex-col group">
                     <div class="w-full h-52 bg-gray-100 rounded-2xl overflow-hidden mb-6 relative">
                         <video autoplay loop muted playsinline preload="auto" disablePictureInPicture class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
@@ -223,7 +222,7 @@
                     </button>
                 </div>
 
-                <!-- 🚀 KARTU 2: DRIVER MIGO DENGAN VIDEO -->
+                <!-- KARTU 2: DRIVER MIGO -->
                 <div class="bg-pamilo-orange text-white rounded-3xl p-6 lg:p-8 shadow-2xl relative flex flex-col group">
                     <div class="w-full h-52 bg-white/20 rounded-2xl overflow-hidden mb-6 relative">
                         <video autoplay loop muted playsinline preload="auto" disablePictureInPicture class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
@@ -245,6 +244,7 @@
         </div>
     </section>
 
+    <!-- 📰 SECTION BERITA: LINK REDIRECT DIREVISI KE HALAMAN UTUH INFO-GALUH -->
     <section id="berita" class="py-20 bg-pamilo-light">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-end mb-12">
@@ -252,7 +252,8 @@
                     <h2 class="text-sm font-bold text-pamilo-softblue uppercase tracking-widest mb-2">Kabar PAMILO</h2>
                     <h3 class="text-3xl md:text-4xl font-black text-pamilo-dark">Informasi & Promo Terbaru</h3>
                 </div>
-                <a href="#" class="hidden md:block text-pamilo-softblue font-bold hover:text-pamilo-dark transition">Lihat Semua Berita <i class="fas fa-arrow-right ml-1"></i></a>
+                <!-- 🚀 STRATEGIS: Mengarah ke halaman utama info-galuh.html -->
+                <a href="info-galuh.html" class="hidden md:block text-pamilo-softblue font-bold hover:text-pamilo-dark transition">Lihat Semua Berita <i class="fas fa-arrow-right ml-1"></i></a>
             </div>
 
             <div id="wadahBerita" class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -292,7 +293,8 @@
                         <li><a href="#beranda" class="hover:text-pamilo-orange transition">Beranda</a></li>
                         <li><a href="#layanan" class="hover:text-pamilo-orange transition">Layanan PAMILO</a></li>
                         <li><a href="#gabung" class="hover:text-pamilo-orange transition">Gabung Mitra & Driver</a></li>
-                        <li><a href="#berita" class="hover:text-pamilo-orange transition">Kabar Terbaru</a></li>
+                        <!-- 🚀 STRATEGIS: Mengarah ke halaman utama info-galuh.html -->
+                        <li><a href="info-galuh.html" class="hover:text-pamilo-orange transition">Kabar Terbaru</a></li>
                     </ul>
                 </div>
 
@@ -390,7 +392,7 @@
         </div>
     </div>
 
-    <!-- 💬 TOMBOL WA ADMIN MENGAMBANG (Kiri Bawah) -->
+    <!-- TOMBOL WA ADMIN MENGAMBANG -->
     <a href="https://wa.me/6283829392370?text=Halo%20Admin%20PAMILO,%20saya%20ingin%20bertanya%20seputar%20aplikasi%20ini..." target="_blank" class="fixed bottom-6 left-6 z-50 w-14 h-14 bg-[#25D366] text-white rounded-full shadow-[0_0_15px_rgba(37,211,102,0.5)] flex items-center justify-center hover:bg-[#1DA851] transition-all transform hover:scale-110 border-2 border-white">
         <span class="absolute -top-2 -right-2 flex h-4 w-4">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
@@ -399,12 +401,12 @@
         <i class="fab fa-whatsapp text-3xl"></i>
     </a>
 
-    <!-- 🎵 ELEMEN AUDIO -->
+    <!-- ELEMEN AUDIO -->
     <audio id="bgMusic" loop>
         <source src="backsound.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- 🎵 TOMBOL MUSIK MENGAMBANG (Kanan Bawah) -->
+    <!-- TOMBOL MUSIK MENGAMBANG -->
     <button id="btnMusik" onclick="toggleMusik()" class="fixed bottom-6 right-6 z-50 w-14 h-14 bg-pamilo-dark text-white rounded-full shadow-[0_0_15px_rgba(211,84,0,0.5)] flex items-center justify-center hover:bg-pamilo-orange transition-all transform hover:scale-110 border-2 border-pamilo-orange/50">
         <i id="ikonMusik" class="fas fa-volume-mute text-xl"></i>
     </button>
@@ -510,6 +512,8 @@
                 let htmlBerita = '';
                 data.forEach(berita => {
                     const gambar = berita.gambar_thumbnail || 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800'; 
+                    
+                    // 🚀 DIREVISI: Mengarah ke halaman induk info-galuh.html agar bisa memicu sasis bacaan
                     htmlBerita += `
                         <div class="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100 flex flex-col">
                             <div class="h-48 overflow-hidden relative">
@@ -520,7 +524,7 @@
                                 <h4 class="text-xl font-bold text-pamilo-dark mb-3 line-clamp-2">${berita.judul}</h4>
                                 <p class="text-sm text-gray-600 mb-6 line-clamp-3">${berita.konten.replace(/<[^>]*>?/gm, '')}</p>
                                 <div class="mt-auto pt-4 border-t border-gray-100">
-                                    <a href="artikel.html?slug=${berita.slug}" class="inline-block text-pamilo-softblue font-bold hover:text-pamilo-dark transition">
+                                    <a href="info-galuh.html" class="inline-block text-pamilo-softblue font-bold hover:text-pamilo-dark transition">
                                         Baca Selengkapnya <i class="fas fa-arrow-right ml-1"></i>
                                     </a>
                                 </div>
