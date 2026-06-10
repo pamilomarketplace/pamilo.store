@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin PAMILO - Login & Redaksi</title>
+    <title>Admin PAMILO - Konsol Eksekutif & Redaksi</title>
     <link rel="icon" type="image/png" href="icon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- 🗺️ Sasis Peta Leaflet.js (Gratis, Ringan, Tanpa Beban Tagihan API Google Maps) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     
     <script>
         tailwind.config = {
@@ -23,121 +26,391 @@
             }
         }
     </script>
+    <style>
+        #map { height: 420px; width: 100%; border-radius: 1.5rem; z-index: 1; }
+        /* Kustomisasi scrollbar halus untuk antrean macet */
+        .custom-scroll::-webkit-scrollbar { width: 5px; }
+        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; }
+    </style>
 </head>
-<body class="bg-pamilo-light font-sans text-gray-800 antialiased p-6 md:p-12 min-h-screen flex items-center justify-center">
+<body class="bg-pamilo-light font-sans text-gray-800 antialiased p-4 md:p-8 min-h-screen flex items-center justify-center">
 
+    <!-- 🔒 1. SECTION FORM LOGIN GATE -->
     <div id="loginSection" class="w-full max-w-md bg-white rounded-3xl shadow-xl p-8 border border-gray-100 hidden">
         <div class="text-center mb-8">
-            <div class="w-16 h-16 bg-pamilo-orange rounded-xl flex items-center justify-center mx-auto mb-4">
+            <div class="w-16 h-16 bg-pamilo-orange rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-pamilo-orange/20">
                 <i class="fas fa-lock text-white text-2xl"></i>
             </div>
             <h2 class="text-2xl font-black text-pamilo-dark">Login Admin</h2>
-            <p class="text-sm text-gray-500 mt-1">Akses khusus Dapur Redaksi PAMILO</p>
+            <p class="text-sm text-gray-500 mt-1">Akses khusus Dapur Eksekutif PAMILO</p>
         </div>
 
         <form id="formLogin" onsubmit="prosesLogin(event)" class="space-y-5">
             <div>
                 <label class="block text-sm font-bold text-gray-700 mb-2">Email</label>
-                <input type="email" id="login_email" required class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pamilo-orange outline-none" placeholder="admin@pamilo.store">
+                <input type="email" id="login_email" required class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pamilo-orange outline-none transition" placeholder="admin@pamilo.store">
             </div>
             <div>
                 <label class="block text-sm font-bold text-gray-700 mb-2">Password</label>
-                <input type="password" id="login_password" required class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pamilo-orange outline-none" placeholder="Masukkan password">
+                <input type="password" id="login_password" required class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pamilo-orange outline-none transition" placeholder="Masukkan password">
             </div>
-            <button type="submit" id="btnLogin" class="w-full bg-pamilo-dark text-white font-bold py-3.5 rounded-xl hover:bg-gray-800 transition mt-2 flex items-center justify-center gap-2">
+            <button type="submit" id="btnLogin" class="w-full bg-pamilo-dark text-white font-bold py-3.5 rounded-xl hover:bg-gray-800 transition mt-2 flex items-center justify-center gap-2 shadow-md">
                 <i class="fas fa-sign-in-alt"></i> Masuk Sistem
             </button>
         </form>
     </div>
 
-    <div id="dashboardSection" class="w-full max-w-4xl mx-auto bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 hidden">
+    <!-- 🏛️ 2. SECTION UTAMA DASHBOARD INTEGRASI (REDAKSI + GOD MODE MAPS) -->
+    <div id="dashboardSection" class="w-full max-w-7xl mx-auto space-y-6 hidden self-start">
         
-        <div class="bg-pamilo-dark p-8 text-white flex flex-col md:flex-row justify-between items-center gap-4">
-            <div>
-                <h1 class="text-3xl font-black mb-1">Dapur Redaksi PAMILO</h1>
-                <p class="text-sm text-gray-300">Publikasi Informasi & Promo ke pamilo.store</p>
+        <!-- BANNER HEADER UTAMA -->
+        <div class="bg-pamilo-dark p-6 md:p-8 rounded-3xl text-white flex flex-col md:flex-row justify-between items-center gap-4 shadow-xl">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-pamilo-orange rounded-xl flex items-center justify-center text-xl shadow-md">
+                    <i class="fas fa-satellite-dish animate-pulse"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-black mb-1">Dapur Redaksi & Komando PAMILO</h1>
+                    <p class="text-sm text-gray-300">Selamat bekerja, Admin <span class="text-pamilo-orange font-bold font-mono text-xs bg-white/10 px-2 py-0.5 rounded ml-1" id="txt-radar-clock">RADAR LIVE --:--:--</span></p>
+                </div>
             </div>
             <div class="flex gap-3">
-                <a href="index.html" target="_blank" class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-xl transition text-sm font-bold flex items-center gap-2">
+                <a href="index.html" target="_blank" class="bg-white/10 hover:bg-white/20 border border-white/10 px-4 py-2.5 rounded-xl transition text-sm font-bold flex items-center gap-2">
                     <i class="fas fa-external-link-alt"></i> Web Utama
                 </a>
-                <button onclick="prosesLogout()" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-xl transition text-sm font-bold flex items-center gap-2">
+                <button onclick="prosesLogout()" class="bg-red-500 hover:bg-red-600 px-4 py-2.5 rounded-xl transition text-sm font-bold flex items-center gap-2 shadow-md shadow-red-500/10">
                     <i class="fas fa-power-off"></i> Keluar
                 </button>
             </div>
         </div>
 
-        <form id="formBerita" onsubmit="terbitkanBerita(event)" class="p-8 space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="md:col-span-2">
-                    <label class="block text-sm font-bold text-gray-700 mb-2">Judul Artikel / Promo</label>
-                    <input type="text" id="b_judul" oninput="buatSlug()" required class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pamilo-softblue outline-none" placeholder="Contoh: Diskon Ongkir MIGO Akhir Bulan">
-                </div>
-
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-2">Kategori</label>
-                    <select id="b_kategori" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pamilo-softblue outline-none">
-                        <option value="Promo">Promo Diskon</option>
-                        <option value="Info Mitra">Info Mitra & Driver</option>
-                        <option value="Kisah Sukses">Kisah Sukses</option>
-                        <option value="Pengumuman">Pengumuman Umum</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-2">Upload Gambar Thumbnail</label>
-                    <input type="file" id="b_gambar_file" accept="image/*" class="w-full border border-gray-300 bg-white rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-pamilo-softblue outline-none file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-pamilo-softblue file:text-white hover:file:bg-[#7a9bc0] transition">
-                    <p class="text-xs text-gray-400 mt-2">*Format JPG/PNG. Kosongkan untuk default.</p>
-                </div>
-
-                <div class="md:col-span-2 hidden">
-                    <label class="block text-sm font-bold text-gray-700 mb-2">Slug URL</label>
-                    <input type="text" id="b_slug" readonly class="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 outline-none text-gray-500">
-                </div>
-
-                <div class="md:col-span-2">
-                    <label class="block text-sm font-bold text-gray-700 mb-2">Isi Konten Berita</label>
-                    <textarea id="b_konten" required rows="8" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pamilo-softblue outline-none" placeholder="Tulis rincian informasi atau promo di sini..."></textarea>
-                </div>
-                
-                <div class="md:col-span-2">
-                    <label class="block text-sm font-bold text-gray-700 mb-2">Status Publikasi</label>
-                    <select id="b_status" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pamilo-softblue outline-none">
-                        <option value="published">Langsung Terbitkan (Published)</option>
-                        <option value="draft">Simpan Sebagai Draft (Belum Tampil)</option>
-                    </select>
+        <!-- 🚀 ARSITEKTUR KOMANDO GOD MODE (RADAR MAPS & DISPATCH) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            <!-- PANEL KIRI: MAPS REALTIME (KASTA WEIGHT 7) -->
+            <div class="lg:col-span-7">
+                <div class="bg-white p-5 rounded-3xl border border-gray-100 shadow-xl shadow-gray-100/50">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-map-marked-alt text-pamilo-orange text-lg"></i>
+                            <h3 class="text-sm font-black uppercase tracking-wider text-pamilo-dark">Peta Koordinat Kurir Ciamis</h3>
+                        </div>
+                        <span class="text-xs font-black bg-orange-50 text-pamilo-orange px-3 py-1 rounded-full border border-orange-100">Driver Online: <span id="count-driver-online">0</span></span>
+                    </div>
+                    <div id="map" class="border border-gray-100 shadow-inner"></div>
                 </div>
             </div>
 
-            <div class="pt-6 border-t border-gray-100 flex justify-end">
-                <button type="submit" id="btnSubmit" class="bg-pamilo-softblue text-white px-8 py-3 rounded-xl font-bold hover:bg-[#7a9bc0] transition shadow-lg flex items-center gap-2">
-                    <i class="fas fa-paper-plane"></i> Publikasikan Artikel
-                </button>
+            <!-- PANEL KANAN: DAFTAR ANTRIAN ORDERAN MACET (KASTA WEIGHT 5) -->
+            <div class="lg:col-span-5 flex flex-col">
+                <div class="bg-white p-5 rounded-3xl border border-gray-100 shadow-xl shadow-gray-100/50 flex-1 flex flex-col h-[490px]">
+                    <div class="flex items-center justify-between mb-4 pb-3 border-b border-gray-100">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-exclamation-triangle text-red-500 text-sm"></i>
+                            <h3 class="text-sm font-black uppercase tracking-wider text-pamilo-dark">Antrean Orderan Macet</h3>
+                        </div>
+                        <span class="text-xs font-black bg-red-50 text-red-600 px-3 py-1 rounded-full border border-red-100" id="badge-total-macet">0 MACET</span>
+                    </div>
+
+                    <!-- SCROLL CONTAINER ORDER LIST -->
+                    <div id="list-orderan-macet" class="space-y-3 overflow-y-auto flex-1 custom-scroll pr-1">
+                        <div class="text-center py-24 text-gray-300">
+                            <i class="fas fa-satellite-dish text-4xl mb-3 opacity-30"></i>
+                            <p class="text-xs font-medium text-gray-400">Membuka sirkuit logistik radar...</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </form>
+
+        </div>
+
+        <!-- 📝 ARSITEKTUR INPUT REDAKSI BERITA (SASI BAWAH ASLI TUAN OWNER) -->
+        <div class="bg-white rounded-3xl shadow-xl shadow-gray-100/50 overflow-hidden border border-gray-100">
+            <div class="bg-pamilo-dark/5 px-8 py-4 border-b border-gray-100 flex items-center gap-2">
+                <i class="fas fa-edit text-pamilo-dark"></i>
+                <h3 class="text-sm font-black uppercase tracking-wider text-pamilo-dark">Form Input Konten Berita / Promo</h3>
+            </div>
+            
+            <form id="formBerita" onsubmit="terbitkanBerita(event)" class="p-8 space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Judul Artikel / Promo</label>
+                        <input type="text" id="b_judul" oninput="buatSlug()" required class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pamilo-softblue outline-none transition" placeholder="Contoh: Diskon Ongkir MIGO Akhir Bulan">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Kategori</label>
+                        <select id="b_kategori" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pamilo-softblue outline-none bg-white">
+                            <option value="Promo">Promo Diskon</option>
+                            <option value="Info Mitra">Info Mitra & Driver</option>
+                            <option value="Kisah Sukses">Kisah Sukses</option>
+                            <option value="Pengumuman">Pengumuman Umum</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Upload Gambar Thumbnail</label>
+                        <input type="file" id="b_gambar_file" accept="image/*" class="w-full border border-gray-300 bg-white rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-pamilo-softblue outline-none file:mr-4 file:py-1.5 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-pamilo-softblue file:text-white hover:file:bg-[#7a9bc0] transition file:cursor-pointer">
+                        <p class="text-xs text-gray-400 mt-2">*Format JPG/PNG. Kosongkan untuk default.</p>
+                    </div>
+
+                    <div class="md:col-span-2 hidden">
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Slug URL</label>
+                        <input type="text" id="b_slug" readonly class="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 outline-none text-gray-500">
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Isi Konten Berita</label>
+                        <textarea id="b_konten" required rows="6" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pamilo-softblue outline-none transition" placeholder="Tulis rincian informasi atau promo di sini..."></textarea>
+                    </div>
+                    
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Status Publikasi</label>
+                        <select id="b_status" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pamilo-softblue outline-none bg-white">
+                            <option value="published">Langsung Terbitkan (Published)</option>
+                            <option value="draft">Simpan Sebagai Draft (Belum Tampil)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="pt-6 border-t border-gray-100 flex justify-end">
+                    <button type="submit" id="btnSubmit" class="bg-pamilo-softblue text-white px-8 py-3.5 rounded-xl font-bold hover:bg-[#7a9bc0] transition shadow-lg shadow-pamilo-softblue/20 flex items-center gap-2">
+                        <i class="fas fa-paper-plane"></i> Publikasikan Artikel
+                    </button>
+                </div>
+            </form>
+        </div>
+
     </div>
 
+    <!-- 🎯 3. OVERLAY MODAL FORCE DISPATCH VVIP -->
+    <div id="dispatchModal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white p-6 rounded-3xl border border-gray-100 w-full max-w-md shadow-2xl text-center space-y-4">
+            <div class="w-12 h-12 bg-pamilo-orange text-white rounded-full flex items-center justify-center mx-auto shadow-lg shadow-pamilo-orange/20 text-lg">
+                <i class="fas fa-crosshairs animate-spin-slow"></i>
+            </div>
+            <div>
+                <h3 class="text-md font-black text-pamilo-dark uppercase tracking-wide">EKSEKUSI FORCE DISPATCH</h3>
+                <p class="text-xs text-gray-500 mt-1">Kunci paksa muatan macet langsung ke target driver online.</p>
+            </div>
+            
+            <div class="text-left">
+                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5">PILIH TARGET DRIVER MIGO ONLINE:</label>
+                <select id="select-target-driver" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-pamilo-dark text-sm text-pamilo-dark font-bold bg-white">
+                    <!-- Dropdown Driver Muncrat via JS -->
+                </select>
+            </div>
+
+            <div class="flex gap-3 pt-2">
+                <button onclick="closeDispatchModal()" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold py-3 rounded-xl text-xs transition">BATALKAN</button>
+                <button onclick="executeForceDispatch()" id="btn-confirm-shoot" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl text-xs transition shadow-md">TEMBAK SEKARANG</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🎛️ LOGIKA BINER JAVASCRIPT INTEGRASI -->
     <script type="module">
+        // Impor koneksi database tervalidasi milik Tuan Owner
         import { pamiloDb } from './supabase.js';
 
         const loginSection = document.getElementById('loginSection');
         const dashboardSection = document.getElementById('dashboardSection');
 
+        let map, driverMarkersGroup;
+        let globalDrivers = [];
+        let globalUsersMap = new Map();
+        let targetOrderId = null;
+        let targetAsalTabel = null;
+
         // --- FUNGSI CEK SESI LOGIN SAAT HALAMAN DIMUAT ---
         async function cekSesi() {
             const { data: { session } } = await pamiloDb.auth.getSession();
             if (session) {
-                // Jika sudah login, tampilkan dashboard
+                // Sesi aman, buka gerbang dashboard
                 loginSection.classList.add('hidden');
                 dashboardSection.classList.remove('hidden');
+                document.body.className = "bg-pamilo-light font-sans text-gray-800 antialiased p-4 md:p-8 min-h-screen";
+
+                // Nyalakan sensor GPS & Realtime Stream
+                if (!map) {
+                    initCommandCenterMaps();
+                    fetchSirkuitDataGodMode();
+                    aktifkanRealtimeStreamDuaSaluran();
+                }
             } else {
-                // Jika belum, tampilkan form login
+                // Sesi mati, kunci di pintu form login
                 loginSection.classList.remove('hidden');
                 dashboardSection.classList.add('hidden');
+                document.body.className = "bg-pamilo-light font-sans text-gray-800 antialiased p-6 md:p-12 min-h-screen flex items-center justify-center";
             }
         }
 
-        // --- FUNGSI LOGIN ---
+        // --- INIASIALISASI MAP LEAFLET CIAMIS REALTIME ---
+        function initCommandCenterMaps() {
+            map = L.map('map').setView([-7.3262, 108.3532], 14); // Set kordinat Alun-Alun Ciamis
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; PAMILO Marketplace Logistik'
+            }).addTo(map);
+            driverMarkersGroup = L.layerGroup().addTo(map);
+        }
+
+        // --- AMBIL DATA INTEGRASI GOD MODE & ANTRIAN MACET DDL ---
+        async function fetchSirkuitDataGodMode() {
+            try {
+                const [resBalances, resDrivers, resPendingOrders, resPendingMigo, resUsers] = await Promise.all([
+                    pamiloDb.from('balances').select('user_id, amount'),
+                    pamiloDb.from('drivers').select('user_id_driver, status_driver, latitude_driver, longitude_driver').eq('status_driver', 'ONLINE'),
+                    pamiloDb.from('orders').select('id, pembeli_id, status_order, jarak_km, biaya_ongkir, total_pembayaran, alamat_pengiriman, created_at').eq('status_order', 'MENCARI_DRIVER').is('kurir_id', null),
+                    pamiloDb.from('migo_orders').select('id, pembeli_id, alamat_jemput, alamat_antar, jarak_km, total_pembayaran, status_order, created_at, tipe_layanan').eq('status_order', 'MENCARI_DRIVER').is('driver_id', null),
+                    pamiloDb.from('users').select('user_id, user_name')
+                ]);
+
+                globalUsersMap = new Map(resUsers.data?.map(u => [u.user_id, u.user_name]) || []);
+                const balanceMap = new Map(resBalances.data?.map(b => [b.user_id, b.amount]) || []);
+
+                // A. Sinkronisasi GPS Kurir MIGO
+                driverMarkersGroup.clearLayers();
+                globalDrivers = resDrivers.data?.map(d => {
+                    const uId = d.user_id_driver;
+                    const dName = globalUsersMap.get(uId) || 'Kurir MIGO';
+                    const dLat = parseFloat(d.latitude_driver) || -7.3262;
+                    const dLng = parseFloat(d.longitude_driver) || 108.3532;
+                    const dSaldo = parseInt(balanceMap.get(uId) || 0);
+
+                    L.marker([dLat, dLng])
+                     .addTo(driverMarkersGroup)
+                     .bindPopup(`<b>🛵 ${dName}</b><br>Saldo: Rp ${dSaldo.toLocaleString('id-ID')}`);
+
+                    return { id: uId, name: dName, saldo: dSaldo };
+                }) || [];
+
+                document.getElementById('count-driver-online').innerText = globalDrivers.length;
+
+                // B. Konstruksi List Antrean Macet (orders & migo_orders Sesuai DDL)
+                let listHtml = "";
+                let totalMacet = 0;
+
+                resPendingOrders.data?.forEach(o => {
+                    totalMacet++;
+                    listHtml += racikTemplateCardHtml(o.id, 'orders', '📦 BELANJA BARANG', globalUsersMap.get(o.pembeli_id) || 'Warga Pamilo', 'Pasar Ciamis', o.alamat_pengiriman, o.jarak_km, o.biaya_ongkir, o.created_at);
+                });
+
+                resPendingMigo.data?.forEach(m => {
+                    totalMacet++;
+                    listHtml += racikTemplateCardHtml(m.id, 'migo_orders', `🛵 OJOL (${m.tipe_layanan})`, globalUsersMap.get(m.pembeli_id) || 'Penumpang Migo', m.alamat_jemput || 'Titik Jemput', m.alamat_antar || 'Titik Antar', m.jarak_km, m.total_pembayaran, m.created_at);
+                });
+
+                document.getElementById('badge-total-macet').innerText = `${totalMacet} MACET`;
+                document.getElementById('list-orderan-macet').innerHTML = totalMacet === 0 
+                    ? `<div class="text-center py-20 text-gray-400 font-medium text-xs"><i class="fas fa-check-circle text-emerald-500 text-3xl mb-2 block"></i>Radar Ciamis Bersih.<br>Nol orderan macet hari ini.</div>`
+                    : listHtml;
+
+                document.getElementById('txt-radar-clock').innerText = `RADAR LIVE ${new Date().toLocaleTimeString('id-ID')}`;
+
+            } catch (err) {
+                console.error("Mogok sinkronisasi sasis komando:", err);
+            }
+        }
+
+        // --- RENDERING CARD HTML ANTRIAN MACET ---
+        function racikTemplateCardHtml(id, tabel, tipe, warga, asal, tujuan, jarak, ongkir, waktu) {
+            const isOjol = tabel === 'migo_orders';
+            const badgeClass = isOjol ? 'bg-red-50 text-red-700 border-red-100' : 'bg-amber-50 text-amber-700 border-amber-100';
+            const hoverClass = isOjol ? 'hover:border-red-300' : 'hover:border-amber-300';
+            const jam = new Date(waktu).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+
+            return `
+                <div class="bg-white p-4 rounded-2xl border border-gray-100 ${hoverClass} transition duration-200 shadow-sm space-y-2 text-xs">
+                    <div class="flex items-center justify-between">
+                        <span class="px-2 py-0.5 font-black uppercase text-[9px] rounded border ${badgeClass}">${tipe}</span>
+                        <span class="text-gray-400 font-mono text-[10px]"><i class="far fa-clock mr-1"></i>${jam}</span>
+                    </div>
+                    <div class="text-pamilo-dark"><b>Pemesan:</b> ${warga}</div>
+                    <div class="text-gray-500 truncate"><b class="text-gray-400 text-[9px] block uppercase tracking-wider">📍 ASAL / JEMPUT:</b> ${asal}</div>
+                    <div class="text-gray-500 truncate"><b class="text-gray-400 text-[9px] block uppercase tracking-wider">🏁 ANTAR / TUJUAN:</b> ${tujuan}</div>
+                    <div class="flex items-center justify-between pt-1 border-t border-gray-50">
+                        <div class="font-bold text-gray-600"><i class="fas fa-map-signs mr-1"></i>${parseFloat(jarak).toFixed(1)} KM</div>
+                        <div class="text-base font-black text-emerald-600">Rp ${parseInt(ongkir).toLocaleString('id-ID')}</div>
+                    </div>
+                    <button onclick="openDispatchModal('${id}', '${tabel}')" class="w-full mt-1 bg-pamilo-dark hover:bg-pamilo-orange text-white font-bold py-2.5 rounded-xl text-[10px] uppercase tracking-wider transition flex items-center justify-center gap-1.5 shadow-sm">
+                        <i class="fas fa-crosshairs text-[9px]"></i> TEMBAK FORCE DISPATCH
+                    </button>
+                </div>
+            `;
+        }
+
+        // --- AKTIFKAN REALTIME STREAM DUA SALURAN TABEL DDL ---
+        function aktifkanRealtimeStreamDuaSaluran() {
+            pamiloDb
+                .channel('executive-web-god-mode-stream')
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, () => { fetchSirkuitDataGodMode(); })
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'migo_orders' }, () => { fetchSirkuitDataGodMode(); })
+                .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'drivers' }, () => { fetchSirkuitDataGodMode(); })
+                .subscribe();
+        }
+
+        // --- INTERFACES MODAL CONTROL WINDOW LINKING ---
+        window.openDispatchModal = function(id, tabel) {
+            if (globalDrivers.length === 0) {
+                Swal.fire('Tembakan Melos 🛑', 'Tidak ada driver MIGO online terdeteksi di radar Ciamis.', 'warning');
+                return;
+            }
+            targetOrderId = id;
+            targetAsalTabel = tabel;
+
+            const select = document.getElementById('select-target-driver');
+            select.innerHTML = globalDrivers.map(d => `<option value="${d.id}">🛵 ${d.name} (Saldo: Rp ${d.saldo.toLocaleString('id-ID')})</option>`).join('');
+
+            document.getElementById('dispatchModal').classList.remove('hidden');
+        };
+
+        window.closeDispatchModal = function() {
+            document.getElementById('dispatchModal').classList.add('hidden');
+            targetOrderId = null;
+            targetAsalTabel = null;
+        };
+
+        // --- EKSEKUSI HULU LEDAK FORCE DISPATCH DATABASE ---
+        window.executeForceDispatch = async function() {
+            const driverUserId = document.getElementById('select-target-driver').value;
+            const btn = document.getElementById('btn-confirm-shoot');
+
+            if (!targetOrderId || !driverUserId || !targetAsalTabel) return;
+
+            try {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengeksekusi...';
+
+                const isOjol = targetAsalTabel === 'migo_orders';
+                const updatePayload = isOjol 
+                    ? { driver_id: driverUserId, status_order: 'MENUJU_JEMPUT' } // Sesuai DDL Migo
+                    : { kurir_id: driverUserId, status_order: 'DIPROSES' };     // Sesuai DDL Orders
+
+                const { data, error } = await pamiloDb
+                    .from(targetAsalTabel)
+                    .update(updatePayload)
+                    .eq('id', targetOrderId)
+                    .eq('status_order', 'MENCARI_DRIVER') // Kunci balapan biner (Race condition)
+                    .select();
+
+                if (error) throw error;
+                if (!data || data.length === 0) throw new Error("Orderan melos! Sudah disamber driver MIGO lain di jalan.");
+
+                Swal.fire('Tembakan Berhasil! 🎯', 'Muatan macet resmi dikunci paksa ke driver tujuan.', 'success');
+                closeDispatchModal();
+                fetchSirkuitDataGodMode();
+
+            } catch (err) {
+                Swal.fire('Gagal Menembak', err.message, 'error');
+                closeDispatchModal();
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "TEMBAK SEKARANG";
+            }
+        };
+
+        // --- FUNCTION LOGIN NATIVE ASLI TUAN OWNER ---
         window.prosesLogin = async function(event) {
             event.preventDefault();
             const btn = document.getElementById('btnLogin');
@@ -159,7 +432,7 @@
             } else {
                 Swal.fire({
                     title: 'Selamat Datang!',
-                    text: 'Anda berhasil masuk ke Dapur Redaksi.',
+                    text: 'Anda berhasil masuk ke Dapur Redaksi & Komando.',
                     icon: 'success',
                     timer: 1500,
                     showConfirmButton: false
@@ -167,12 +440,12 @@
                     document.getElementById('formLogin').reset();
                     btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Masuk Sistem';
                     btn.disabled = false;
-                    cekSesi(); // Panggil cek sesi untuk merubah tampilan
+                    cekSesi();
                 });
             }
         };
 
-        // --- FUNGSI LOGOUT ---
+        // --- FUNCTION LOGOUT ASLI TUAN OWNER ---
         window.prosesLogout = async function() {
             await pamiloDb.auth.signOut();
             Swal.fire({
@@ -182,11 +455,12 @@
                 timer: 1500,
                 showConfirmButton: false
             }).then(() => {
+                if (map) { map.remove(); map = null; } // Bersihkan sasis objek Leaflet
                 cekSesi();
             });
         };
 
-        // --- FUNGSI REDAKSI ---
+        // --- FUNCTION REDAKSI BERITA ASLI TUAN OWNER ---
         window.buatSlug = function() {
             const judul = document.getElementById('b_judul').value;
             const slug = judul.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
@@ -259,9 +533,8 @@
             }
         };
 
-        // Jalankan pengecekan sesi saat halaman pertama kali dibuka
+        // Jalankan pemindaian sasis sesi di awal muat
         document.addEventListener('DOMContentLoaded', cekSesi);
-
     </script>
 </body>
 </html>
